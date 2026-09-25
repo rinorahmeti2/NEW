@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="sq">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hapësira Ime</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="logo">◆</span>
+        <span>Hapësira Ime</span>
+      </div>
+      <button class="search-btn" id="open-palette">
+        <span>Kërko modul…</span><kbd>Ctrl K</kbd>
+      </button>
+      <nav id="nav"></nav>
+      <button class="theme-btn" id="theme-toggle">Ndrysho temën</button>
+    </aside>
+
+    <main class="main">
+      <header class="module-header">
+        <h1 id="module-title"></h1>
+        <p id="module-desc"></p>
+      </header>
+      <section id="module-root" class="module-root"></section>
+    </main>
+  </div>
+
+  <div class="palette" id="palette" hidden>
+    <div class="palette-box">
+      <input id="palette-input" placeholder="Shkruaj emrin e modulit…" autocomplete="off">
+      <ul id="palette-list"></ul>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+  <!-- Modulet: shto një rresht këtu për çdo modul të ri -->
+  <script src="modules/detyrat.js"></script>
+  <script src="modules/shenime.js"></script>
+  <script src="modules/pomodoro.js"></script>
+  <script src="modules/fjalekalim.js"></script>
+  <script>App.start();</script>
+</body>
+</html>
