@@ -3,632 +3,739 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Në Vendlindje</title>
+<title>Lista e Thirrjeve</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap">
 <style>
 :root {
-  --bg: #f3f5f9;
+  --bg: #f4f2ef;
   --panel: #ffffff;
-  --panel-2: #eaeef6;
-  --text: #14203a;
-  --muted: #5d6882;
-  --border: #d9dfeb;
-  --blue: #2447a8;
-  --blue-soft: #e3e9f8;
-  --gold: #c9962f;
-  --gold-soft: #f7ecd4;
-  --ok: #1f8a5b;
-  --ok-soft: #dcf2e7;
-  --warn: #b7791f;
-  --warn-soft: #fbeed5;
-  --danger: #c43d4b;
-  --shadow: 0 1px 2px rgb(20 32 58 / .06), 0 8px 24px rgb(20 32 58 / .06);
-  --radius: 14px;
-  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-  --body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --panel-2: #efece8;
+  --text: #1f1b17;
+  --muted: #6e665e;
+  --border: #e0dbd4;
+  --accent: #d9480f;
+  --accent-soft: #fde7dc;
+  --on-accent: #ffffff;
+  --st-pa: #8a8279;        --st-pa-bg: #efece8;
+  --st-biseduar: #1c64c8;  --st-biseduar-bg: #e0ebfa;
+  --st-pritje: #a86400;    --st-pritje-bg: #fcefd6;
+  --st-oferte: #7044c4;    --st-oferte-bg: #ece4fa;
+  --st-nukhapi: #66605a;   --st-nukhapi-bg: #e6e2dd;
+  --st-refuzoi: #c22f3c;   --st-refuzoi-bg: #fbe1e3;
+  --st-marreveshje: #1d8048; --st-marreveshje-bg: #dcf2e4;
+  --radius: 12px;
+  --font: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0f1522; --panel: #172033; --panel-2: #1e2940; --text: #e7ecf6; --muted: #98a3bd;
-    --border: #2a3652; --blue: #7d9bf0; --blue-soft: #1f2b4d; --gold: #e2b457; --gold-soft: #3a3020;
-    --ok: #5ccf97; --ok-soft: #173a2b; --warn: #e5ad55; --warn-soft: #3b2e17; --danger: #f07b87;
-    --shadow: 0 1px 2px rgb(0 0 0 / .3); color-scheme: dark;
+    color-scheme: dark;
+    --bg: #161412; --panel: #201d1a; --panel-2: #2a2622; --text: #f1ede8; --muted: #a59d94; --border: #36312c;
+    --accent: #ff7a45; --accent-soft: #3d2216; --on-accent: #1a0d06;
+    --st-pa: #a59d94; --st-pa-bg: #2a2622;
+    --st-biseduar: #78aaf2; --st-biseduar-bg: #1a2a42;
+    --st-pritje: #f0b452; --st-pritje-bg: #3a2c12;
+    --st-oferte: #b393f2; --st-oferte-bg: #2c2240;
+    --st-nukhapi: #b8b0a6; --st-nukhapi-bg: #302c28;
+    --st-refuzoi: #f2808a; --st-refuzoi-bg: #3e1d21;
+    --st-marreveshje: #63d495; --st-marreveshje-bg: #173426;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0f1522; --panel: #172033; --panel-2: #1e2940; --text: #e7ecf6; --muted: #98a3bd;
-  --border: #2a3652; --blue: #7d9bf0; --blue-soft: #1f2b4d; --gold: #e2b457; --gold-soft: #3a3020;
-  --ok: #5ccf97; --ok-soft: #173a2b; --warn: #e5ad55; --warn-soft: #3b2e17; --danger: #f07b87;
-  --shadow: 0 1px 2px rgb(0 0 0 / .3); color-scheme: dark;
+  color-scheme: dark;
+  --bg: #161412; --panel: #201d1a; --panel-2: #2a2622; --text: #f1ede8; --muted: #a59d94; --border: #36312c;
+  --accent: #ff7a45; --accent-soft: #3d2216; --on-accent: #1a0d06;
+  --st-pa: #a59d94; --st-pa-bg: #2a2622;
+  --st-biseduar: #78aaf2; --st-biseduar-bg: #1a2a42;
+  --st-pritje: #f0b452; --st-pritje-bg: #3a2c12;
+  --st-oferte: #b393f2; --st-oferte-bg: #2c2240;
+  --st-nukhapi: #b8b0a6; --st-nukhapi-bg: #302c28;
+  --st-refuzoi: #f2808a; --st-refuzoi-bg: #3e1d21;
+  --st-marreveshje: #63d495; --st-marreveshje-bg: #173426;
 }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
-body { background: var(--bg); color: var(--text); font: 15px/1.55 var(--body); padding-inline: 16px; padding-block: 0 110px; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 var(--font); padding-inline: 16px; padding-block: 0 40px; }
 button, input, select, textarea { font: inherit; color: inherit; }
-h1, h2, h3 { font-family: var(--display); line-height: 1.15; text-wrap: balance; margin: 0; }
-.wrap { max-width: 1120px; margin: 0 auto; }
-:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+h1, h2, h3 { margin: 0; line-height: 1.2; text-wrap: balance; }
+.num { font-variant-numeric: tabular-nums; letter-spacing: .01em; }
+.wrap { max-width: 1240px; margin: 0 auto; }
 
-/* Header */
-.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); margin-inline: -16px; padding-inline: 16px; border-bottom: 1px solid var(--border); }
-.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px; flex-wrap: wrap; }
-.brand { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 800; font-size: 1.2rem; }
-.mark { width: 32px; height: 32px; border-radius: 9px; background: var(--blue); display: grid; place-items: center; }
-.mark svg { width: 20px; height: 20px; }
-.tabs { display: flex; gap: 4px; background: var(--panel-2); padding: 4px; border-radius: 999px; }
-.tab { border: 0; background: none; padding: 7px 14px; border-radius: 999px; cursor: pointer; color: var(--muted); font-weight: 600; font-size: .9rem; white-space: nowrap; }
-.tab[aria-selected="true"] { background: var(--panel); color: var(--text); box-shadow: var(--shadow); }
-.tab .count { display: inline-block; min-width: 18px; padding: 0 5px; margin-left: 4px; border-radius: 999px; background: var(--gold); color: #fff; font-size: .72rem; line-height: 18px; text-align: center; }
+/* Top */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-block: 18px 14px; }
+.title { display: flex; align-items: center; gap: 10px; }
+.title h1 { font-size: 1.35rem; font-weight: 800; letter-spacing: -.01em; }
+.title .dot { width: 30px; height: 30px; border-radius: 8px; background: var(--accent); display: grid; place-items: center; color: var(--on-accent); }
+.title .dot svg { width: 18px; height: 18px; }
+.mode { font-size: .78rem; color: var(--muted); }
+.top-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
-/* Hero */
-.hero { display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items: center; padding-block: 40px 28px; }
-.eyebrow { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); }
-.hero h1 { font-size: clamp(2rem, 4.6vw, 3.2rem); font-weight: 800; letter-spacing: -.02em; margin-block: 8px 14px; }
-.hero h1 em { font-style: normal; color: var(--blue); }
-.hero p { color: var(--muted); max-width: 52ch; margin: 0; font-size: 1.05rem; }
-.proof { display: grid; gap: 10px; }
-.proof div { display: flex; gap: 12px; align-items: flex-start; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
-.proof b { display: block; }
-.proof span { color: var(--muted); font-size: .9rem; }
-.proof i { flex: none; width: 34px; height: 34px; border-radius: 10px; background: var(--gold-soft); color: var(--gold); display: grid; place-items: center; font-style: normal; }
-.proof i svg { width: 18px; height: 18px; }
+.btn { border: 0; border-radius: 10px; padding: 9px 15px; font-weight: 700; background: var(--panel-2); color: var(--text); display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
+.btn:hover { filter: brightness(.97); }
+.btn.primary { background: var(--accent); color: var(--on-accent); }
+.btn.small { padding: 6px 11px; font-size: .86rem; }
+.btn svg { width: 17px; height: 17px; }
+.btn:disabled { opacity: .5; cursor: default; }
+.link { border: 0; background: none; color: var(--muted); font-size: .85rem; text-decoration: underline; padding: 2px; }
+.link.danger { color: var(--st-refuzoi); }
 
-/* Catalog */
-.toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 18px; }
-.search { flex: 1 1 240px; display: flex; align-items: center; gap: 8px; background: var(--panel); border: 1px solid var(--border); border-radius: 999px; padding: 0 14px; }
-.search input { border: 0; background: none; padding: 10px 0; width: 100%; outline: none; }
-.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 22px; }
-.chip { border: 1px solid var(--border); background: var(--panel); padding: 6px 12px; border-radius: 999px; cursor: pointer; font-size: .88rem; font-weight: 600; color: var(--muted); }
-.chip[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
-.cat-block { margin-bottom: 30px; }
-.cat-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.cat-head h2 { font-size: 1.3rem; }
-.cat-head span { color: var(--muted); font-size: .9rem; }
-.ico { flex: none; width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--blue-soft); color: var(--blue); }
-.ico svg { width: 20px; height: 20px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
-.svc { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 8px; }
-.svc h3 { font-family: var(--body); font-size: 1rem; font-weight: 700; }
-.svc p { margin: 0; color: var(--muted); font-size: .9rem; flex: 1; }
-.svc-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: 4px; }
-.price { font-family: var(--display); font-weight: 800; font-size: 1.25rem; font-variant-numeric: tabular-nums; }
-.price small { font-family: var(--body); font-weight: 500; font-size: .78rem; color: var(--muted); }
-.tag { font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--gold-soft); color: var(--gold); align-self: flex-start; }
+/* Stats */
+.stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 16px; }
+.stat { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
+.stat b { display: block; font-size: 1.55rem; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat span { font-size: .8rem; color: var(--muted); }
+.stat.hl b { color: var(--st-marreveshje); }
 
-.btn { border: 0; border-radius: 10px; padding: 9px 16px; font-weight: 700; cursor: pointer; background: var(--blue); color: #fff; }
-.btn:hover { filter: brightness(1.07); }
-.btn.ghost { background: var(--panel-2); color: var(--text); }
-.btn.gold { background: var(--gold); }
-.btn.small { padding: 6px 12px; font-size: .88rem; white-space: nowrap; }
-.btn.added { background: var(--ok); }
-.link-danger { border: 0; background: none; color: var(--danger); cursor: pointer; font-size: .85rem; font-weight: 600; padding: 4px; }
+/* Layout */
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 16px; align-items: start; }
+.listcol { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.toolbar { display: flex; gap: 8px; flex-wrap: wrap; padding: 12px; border-bottom: 1px solid var(--border); }
+.field-inline { flex: 1 1 200px; display: flex; align-items: center; gap: 6px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 0 10px; }
+.field-inline input { border: 0; background: none; outline: none; padding: 8px 0; width: 100%; }
+.field-inline svg { width: 16px; height: 16px; color: var(--muted); flex: none; }
+.filters { display: flex; gap: 6px; padding: 10px 12px; border-bottom: 1px solid var(--border); overflow-x: auto; }
+.chip { border: 1px solid var(--border); background: var(--panel); border-radius: 999px; padding: 4px 11px; font-size: .84rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.chip[aria-pressed="true"] { background: var(--text); border-color: var(--text); color: var(--bg); }
+.chip .c { font-variant-numeric: tabular-nums; opacity: .75; margin-left: 3px; }
 
-/* Cart bar */
-.cartbar { position: fixed; left: 50%; bottom: 0; transform: translateX(-50%); width: min(720px, 100%); padding: 0 16px calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 30; }
-.cartbar-in { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--text); color: var(--bg); padding: 12px 12px 12px 20px; border-radius: 16px; box-shadow: 0 12px 40px rgb(0 0 0 / .25); }
-.cartbar b { font-family: var(--display); font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+.rows { max-height: calc(100vh - 290px); min-height: 280px; overflow-y: auto; }
+.row { display: grid; grid-template-columns: 130px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border); cursor: pointer; width: 100%; text-align: left; background: none; border-left: 3px solid transparent; border-top: 0; border-right: 0; }
+.row:hover { background: var(--bg); }
+.row.sel { background: var(--accent-soft); border-left-color: var(--accent); }
+.row .ph { font-weight: 700; font-variant-numeric: tabular-nums; }
+.row .who { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); font-size: .9rem; }
+.row .who b { color: var(--text); font-weight: 600; }
+.row .right { display: flex; align-items: center; gap: 8px; }
+.calls { font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.calls.warn { color: var(--st-pritje); font-weight: 700; }
+.pill { display: inline-flex; align-items: center; gap: 5px; border-radius: 999px; padding: 2px 9px; font-size: .78rem; font-weight: 700; white-space: nowrap; }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.more { padding: 12px; text-align: center; }
+
+.empty { padding: 36px 20px; text-align: center; color: var(--muted); }
+.empty h3 { color: var(--text); font-size: 1.1rem; margin-bottom: 6px; }
+.empty ol { text-align: left; display: inline-block; margin: 10px 0 16px; padding-left: 20px; }
+
+/* Detail */
+.detail { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); position: sticky; top: calc(12px + env(safe-area-inset-top, 0px)); max-height: calc(100vh - 24px); overflow-y: auto; }
+.d-head { padding: 16px 18px 12px; border-bottom: 1px solid var(--border); display: grid; gap: 8px; }
+.d-num { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.d-num h2 { font-size: 1.7rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: .01em; }
+.d-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: .85rem; color: var(--muted); }
+.warnbox { background: var(--st-pritje-bg); color: var(--st-pritje); border-radius: 8px; padding: 7px 10px; font-size: .85rem; font-weight: 600; }
+.d-sec { padding: 14px 18px; border-bottom: 1px solid var(--border); }
+.d-sec:last-child { border-bottom: 0; }
+.d-sec h3 { font-size: .74rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 700; margin-bottom: 10px; display: flex; justify-content: space-between; }
+.status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.sbtn { display: flex; align-items: center; gap: 8px; border: 1px solid var(--border); background: var(--panel); border-radius: 10px; padding: 9px 10px; font-weight: 600; font-size: .9rem; text-align: left; }
+.sbtn .k { margin-left: auto; font-size: .7rem; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 0 5px; font-variant-numeric: tabular-nums; }
+.sbtn .sw { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.sbtn.on { border-width: 2px; padding: 8px 9px; }
+.form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.f { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.f.full { grid-column: 1 / -1; }
+.f label { font-size: .78rem; font-weight: 600; color: var(--muted); }
+.f input, .f select, .f textarea { border: 1px solid var(--border); background: var(--bg); border-radius: 8px; padding: 8px 10px; width: 100%; min-width: 0; }
+.saved { font-size: .75rem; color: var(--muted); font-weight: 500; text-transform: none; letter-spacing: 0; }
+.hist { display: grid; gap: 4px; font-size: .86rem; }
+.hist div { display: flex; justify-content: space-between; gap: 8px; }
+.hist span { color: var(--muted); font-variant-numeric: tabular-nums; }
+.d-empty { padding: 40px 22px; text-align: center; color: var(--muted); }
+.d-close { display: none; }
 
 /* Modal */
-.modal { position: fixed; inset: 0; background: rgb(10 16 30 / .5); z-index: 50; display: flex; justify-content: center; align-items: flex-start; overflow-y: auto; padding: 5vh 16px; }
-.sheet { background: var(--panel); border-radius: 18px; width: min(620px, 100%); padding: 24px; box-shadow: 0 30px 80px rgb(0 0 0 / .3); }
-.sheet-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.x { border: 0; background: var(--panel-2); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 1.1rem; }
-.lines { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 18px; }
-.line { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--border); }
-.line:last-child { border-bottom: 0; }
-.line .n { flex: 1; min-width: 0; }
-.qty { display: flex; align-items: center; gap: 6px; }
-.qty button { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--border); background: var(--panel); cursor: pointer; }
-.num { font-variant-numeric: tabular-nums; min-width: 60px; text-align: right; font-weight: 700; }
-.total { display: flex; justify-content: space-between; padding: 12px; background: var(--panel-2); border-radius: 0 0 12px 12px; font-weight: 700; }
-.form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.field { display: flex; flex-direction: column; gap: 4px; }
-.field.full { grid-column: 1 / -1; }
-.field label { font-size: .82rem; font-weight: 600; color: var(--muted); }
-.field input, .field select, .field textarea { border: 1px solid var(--border); background: var(--bg); border-radius: 10px; padding: 9px 11px; width: 100%; }
-.note { font-size: .85rem; color: var(--muted); margin: 12px 0 0; }
+.modal { position: fixed; inset: 0; z-index: 40; background: rgb(15 10 5 / .5); display: flex; justify-content: center; align-items: flex-start; overflow-y: auto; padding: 5vh 16px; }
+.sheet { background: var(--panel); border-radius: 16px; width: min(640px, 100%); padding: 20px; box-shadow: 0 30px 80px rgb(0 0 0 / .3); display: grid; gap: 14px; }
+.sheet-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.sheet-head h2 { font-size: 1.25rem; }
+.x { border: 0; background: var(--panel-2); width: 34px; height: 34px; border-radius: 50%; font-size: 1rem; flex: none; }
+.seg { display: flex; background: var(--panel-2); border-radius: 10px; padding: 3px; gap: 3px; }
+.seg button { flex: 1; border: 0; background: none; border-radius: 8px; padding: 8px; font-weight: 700; color: var(--muted); }
+.seg button[aria-selected="true"] { background: var(--panel); color: var(--text); box-shadow: 0 1px 3px rgb(0 0 0 / .1); }
+textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border); background: var(--bg); border-radius: 10px; padding: 10px; font-variant-numeric: tabular-nums; resize: vertical; }
+.drop { border: 2px dashed var(--border); border-radius: 12px; padding: 26px 16px; text-align: center; display: grid; gap: 8px; justify-items: center; color: var(--muted); }
+.drop.over { border-color: var(--accent); background: var(--accent-soft); }
+.drop img { max-height: 200px; max-width: 100%; border-radius: 8px; }
+.hint { font-size: .84rem; color: var(--muted); margin: 0; }
+.preview { border: 1px solid var(--border); border-radius: 10px; max-height: 300px; overflow-y: auto; }
+.prow { display: grid; grid-template-columns: auto 150px minmax(0, 1fr); gap: 10px; align-items: center; padding: 7px 10px; border-bottom: 1px solid var(--border); font-size: .88rem; }
+.prow:last-child { border-bottom: 0; }
+.prow input[type="text"] { border: 1px solid var(--border); background: var(--bg); border-radius: 6px; padding: 4px 7px; width: 100%; font-variant-numeric: tabular-nums; }
+.prow .note { color: var(--muted); }
+.prow .note.dup { color: var(--st-pritje); font-weight: 600; }
+.prow .note.bad { color: var(--st-refuzoi); font-weight: 600; }
+.sheet-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
 
-/* Orders */
-.section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; padding-block: 32px 18px; }
-.section-head h1 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); }
-.section-head p { margin: 4px 0 0; color: var(--muted); }
-.orders { display: grid; gap: 14px; }
-.order { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; display: grid; gap: 14px; }
-.order-top { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.order-top h3 { font-size: 1.1rem; }
-.meta { color: var(--muted); font-size: .88rem; }
-.pill { display: inline-flex; align-items: center; gap: 6px; font-size: .8rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
-.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-.s-e-re { background: var(--gold-soft); color: var(--gold); }
-.s-pranuar { background: var(--blue-soft); color: var(--blue); }
-.s-ne-pune { background: var(--warn-soft); color: var(--warn); }
-.s-perfunduar { background: var(--ok-soft); color: var(--ok); }
-.demo-tag { font-size: .72rem; font-weight: 700; color: var(--muted); border: 1px dashed var(--border); padding: 1px 7px; border-radius: 6px; margin-left: 6px; }
-.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-.step { font-size: .78rem; color: var(--muted); }
-.step::before { content: ""; display: block; height: 5px; border-radius: 3px; background: var(--panel-2); margin-bottom: 6px; }
-.step.done { color: var(--text); font-weight: 600; }
-.step.done::before { background: var(--blue); }
-.items { display: flex; flex-wrap: wrap; gap: 6px; }
-.items span { background: var(--panel-2); border-radius: 8px; padding: 3px 9px; font-size: .85rem; }
-.photos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.photo { position: relative; aspect-ratio: 4 / 3; max-width: 100%; border-radius: 12px; overflow: hidden; background: var(--panel-2); border: 1px dashed var(--border); display: grid; place-items: center; color: var(--muted); font-size: .85rem; text-align: center; padding: 8px; }
-.photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.photo .lbl { position: absolute; left: 8px; top: 8px; background: rgb(10 16 30 / .7); color: #fff; font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; z-index: 1; }
-.photo.sample { border-style: solid; }
-.photo canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-.empty { background: var(--panel); border: 1px dashed var(--border); border-radius: var(--radius); padding: 40px 20px; text-align: center; color: var(--muted); }
-
-/* Admin */
-.admin-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; align-items: start; }
-.box { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; }
-.box h2 { font-size: 1.15rem; margin-bottom: 4px; }
-.box > p { color: var(--muted); margin: 0 0 14px; font-size: .9rem; }
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-.stat { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
-.stat b { display: block; font-family: var(--display); font-size: 1.6rem; font-variant-numeric: tabular-nums; }
-.stat span { color: var(--muted); font-size: .82rem; }
-.admin-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-.admin-controls select { border: 1px solid var(--border); background: var(--bg); border-radius: 8px; padding: 6px 8px; }
-.upload { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: .85rem; font-weight: 600; color: var(--blue); }
-.upload input { display: none; }
-.mylist { display: grid; gap: 6px; margin-top: 14px; }
-.mylist div { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 10px; background: var(--panel-2); border-radius: 8px; font-size: .9rem; }
-
-.toast { position: fixed; top: calc(70px + env(safe-area-inset-top, 0px)); left: 50%; transform: translate(-50%, -20px); opacity: 0; background: var(--ok); color: #fff; padding: 10px 18px; border-radius: 999px; font-weight: 600; transition: .25s; z-index: 60; pointer-events: none; }
+.toast { position: fixed; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translate(-50%, 20px); opacity: 0; background: var(--text); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-weight: 600; z-index: 60; transition: .2s; pointer-events: none; max-width: calc(100% - 32px); text-align: center; }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
+.spin { width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: sp .8s linear infinite; }
+@keyframes sp { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spin { animation-duration: 3s; } .toast { transition: none; } }
 
-@media (max-width: 800px) {
-  .hero, .admin-grid { grid-template-columns: 1fr; }
-  .stats { grid-template-columns: repeat(2, 1fr); }
-  .form { grid-template-columns: 1fr; }
-  .tabs { width: 100%; overflow-x: auto; }
-  .tab { flex: 1; }
+@media (max-width: 960px) {
+  .main { grid-template-columns: 1fr; }
+  .stats { grid-template-columns: repeat(3, 1fr); }
+  .rows { max-height: none; }
+  .detail { position: fixed; inset: 0; z-index: 30; border-radius: 0; max-height: none; padding-top: env(safe-area-inset-top, 0px); }
+  .detail.idle { display: none; }
+  .d-close { display: inline-flex; }
 }
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media (max-width: 560px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .row { grid-template-columns: minmax(0, 1fr) auto; }
+  .row .who { grid-column: 1 / -1; grid-row: 2; }
+  .form { grid-template-columns: 1fr; }
+  .prow { grid-template-columns: auto minmax(0, 1fr); }
+  .prow .note { grid-column: 2; }
+}
 </style>
 </head>
 <body>
 
-<header class="top">
-  <div class="wrap">
-    <div class="brand">
-      <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9H4z"/><path d="M12 17.5s-3-1.8-3-4a1.7 1.7 0 0 1 3-1 1.7 1.7 0 0 1 3 1c0 2.2-3 4-3 4z" fill="#fff" stroke="none"/></svg></span>
-      Në Vendlindje
+<div class="wrap">
+  <header class="top">
+    <div class="title">
+      <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span>
+      <div><h1>Lista e Thirrjeve</h1><div class="mode" id="mode">Duke u ngarkuar…</div></div>
     </div>
-    <nav class="tabs" role="tablist">
-      <button class="tab" role="tab" data-view="sherbimet">Shërbimet</button>
-      <button class="tab" role="tab" data-view="porosite">Porositë e mia <span class="count" id="order-count" hidden></span></button>
-      <button class="tab" role="tab" data-view="paneli">Paneli i pronarit</button>
-    </nav>
+    <div class="top-actions">
+      <button class="btn" id="btn-next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>Thirrja e radhës</button>
+      <button class="btn" id="btn-export">Shkarko Excel</button>
+      <button class="btn primary" id="btn-add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Shto numra</button>
+    </div>
+  </header>
+
+  <section class="stats" id="stats"></section>
+
+  <div class="main">
+    <section class="listcol">
+      <div class="toolbar">
+        <label class="field-inline" for="q">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input id="q" type="search" placeholder="Kërko numrin, emrin, komunën, veturën…" autocomplete="off">
+        </label>
+        <label class="field-inline" for="quick" style="flex:0 1 230px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          <input id="quick" placeholder="Numër i shpejtë + Enter" inputmode="tel" autocomplete="off">
+        </label>
+        <select id="sort" class="btn small" aria-label="Renditja">
+          <option value="created">Sipas radhës së listës</option>
+          <option value="updated">Të prekurat së fundmi</option>
+        </select>
+      </div>
+      <div class="filters" id="filters"></div>
+      <div class="rows" id="rows"></div>
+    </section>
+
+    <aside class="detail idle" id="detail"></aside>
   </div>
-</header>
+</div>
 
-<main class="wrap">
-  <section id="view-sherbimet">
-    <div class="hero">
-      <div>
-        <div class="eyebrow">Për mërgatën në Gjermani, Zvicër, Austri e gjithkund</div>
-        <h1>Shtëpia dhe prindërit në Kosovë, <em>në duar të sigurta</em> sa je larg.</h1>
-        <p>Porosit pastrim, riparime, blerje ushqimesh apo kujdes për prindërit. Ne e kryejmë punën dhe të dërgojmë foto para dhe pas, që ta shohësh vetë.</p>
-      </div>
-      <div class="proof">
-        <div><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg></i><p style="margin:0"><b>Foto para dhe pas</b><span>Çdo punë dokumentohet, pa përjashtim.</span></p></div>
-        <div><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 7a6 6 0 1 0 0 10"/><path d="M4 10h9M4 14h9"/></svg></i><p style="margin:0"><b>Çmime fikse në euro</b><span>E di koston para se të porositësh.</span></p></div>
-        <div><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg></i><p style="margin:0"><b>25 komuna të Kosovës</b><span>Nga Prishtina deri në Dragash.</span></p></div>
-      </div>
+<!-- Shto numra -->
+<div class="modal" id="add" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="add-title">
+    <div class="sheet-head"><h2 id="add-title">Shto numra</h2><button class="x" data-close aria-label="Mbyll">✕</button></div>
+    <div class="seg" role="tablist">
+      <button role="tab" data-tab="photo" aria-selected="true">Foto e fletës</button>
+      <button role="tab" data-tab="text" aria-selected="false">Shkruaj ose ngjit</button>
     </div>
 
-    <div class="toolbar">
-      <label class="search" for="q">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-        <input id="q" type="search" placeholder="Kërko shërbim, p.sh. kositje, faturë, aeroport…" autocomplete="off">
+    <div id="tab-photo">
+      <label class="drop" id="drop" for="photo">
+        <img id="photo-prev" alt="Fotoja e zgjedhur" hidden>
+        <svg id="photo-ico" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg>
+        <b style="color:var(--text)" id="photo-label">Bëj foto ose zgjidh foton e fletës</b>
+        <span class="hint">Claude i lexon numrat, edhe të shkruar me dorë. I kontrollon para se t'i shtosh.</span>
+        <input id="photo" type="file" accept="image/*" capture="environment" hidden>
       </label>
+      <p class="hint" id="photo-off" hidden>Leximi i fotos punon vetëm kur faqja hapet brenda Claude. Këtu mund t'i ngjitësh numrat te “Shkruaj ose ngjit”.</p>
+      <div id="photo-status" class="hint" style="display:flex;gap:8px;align-items:center;margin-top:10px" hidden><span class="spin"></span><span>Claude po i lexon numrat… (zakonisht 10–30 sekonda)</span></div>
     </div>
-    <div class="chips" id="chips"></div>
-    <div id="catalog"></div>
-  </section>
 
-  <section id="view-porosite" hidden>
-    <div class="section-head">
-      <div>
-        <h1>Porositë e mia</h1>
-        <p>Ndiq statusin dhe shiko fotot kur puna përfundon.</p>
-      </div>
+    <div id="tab-text" hidden>
+      <textarea class="paste" id="paste" placeholder="Ngjit ose shkruaj numrat, një për rresht ose të ndarë me presje:&#10;044 123 456&#10;049 555 222&#10;+383 45 987 654"></textarea>
+      <div style="display:flex;justify-content:flex-end;margin-top:8px"><button class="btn small" id="btn-parse">Kontrollo numrat</button></div>
     </div>
-    <div class="orders" id="my-orders"></div>
-  </section>
 
-  <section id="view-paneli" hidden>
-    <div class="section-head">
-      <div>
-        <h1>Paneli i pronarit</h1>
-        <p>Menaxho porositë, cakto punëtorët, ngarko fotot dhe shto shërbime të reja.</p>
-      </div>
+    <div id="preview-wrap" hidden>
+      <p class="hint" style="margin-bottom:8px">Kontrollo numrat. Mund t'i rregullosh para se t'i shtosh. Numrat që ekzistojnë janë të çaktivizuar.</p>
+      <div class="preview" id="preview"></div>
     </div>
-    <div class="stats" id="stats"></div>
-    <div class="admin-grid">
-      <div>
-        <h2 style="font-size:1.15rem;margin-bottom:12px">Porositë</h2>
-        <div class="orders" id="admin-orders"></div>
-      </div>
-      <div class="box">
-        <h2>Shto shërbim të ri</h2>
-        <p>Shërbimi shfaqet menjëherë në katalog, te kategoria që zgjedh.</p>
-        <form class="form" id="svc-form" style="grid-template-columns:1fr">
-          <div class="field"><label for="ns-name">Emri i shërbimit</label><input id="ns-name" required placeholder="p.sh. Pastrim i oxhakut"></div>
-          <div class="field"><label for="ns-cat">Kategoria</label><select id="ns-cat"></select></div>
-          <div class="field" id="ns-newcat-wrap" hidden><label for="ns-newcat">Emri i kategorisë së re</label><input id="ns-newcat" placeholder="p.sh. Kafshët shtëpiake"></div>
-          <div class="form" style="grid-template-columns:1fr 1fr">
-            <div class="field"><label for="ns-price">Çmimi (€)</label><input id="ns-price" type="number" min="0" step="0.5" required placeholder="30"></div>
-            <div class="field"><label for="ns-unit">Njësia</label><select id="ns-unit"><option value="">për punë</option><option value="/orë">për orë</option><option value="/muaj">në muaj</option><option value="/copë">për copë</option><option value="+ produktet">+ kostoja e produkteve</option></select></div>
-          </div>
-          <div class="field"><label for="ns-desc">Përshkrimi</label><textarea id="ns-desc" rows="3" placeholder="Çfarë përfshin shërbimi?"></textarea></div>
-          <button class="btn" type="submit">Shto në katalog</button>
-        </form>
-        <div class="mylist" id="custom-list"></div>
-      </div>
-    </div>
-  </section>
-</main>
 
-<div class="cartbar" id="cartbar" hidden>
-  <div class="cartbar-in">
-    <div><span id="cart-n"></span><br><b id="cart-total"></b></div>
-    <button class="btn gold" id="open-checkout">Vazhdo me porosinë</button>
+    <div class="sheet-foot">
+      <span class="hint" id="add-summary"></span>
+      <button class="btn primary" id="btn-commit" disabled>Shto në listë</button>
+    </div>
   </div>
 </div>
 
-<div class="modal" id="checkout" hidden>
-  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="co-title">
-    <div class="sheet-head"><h2 id="co-title">Porosia jote</h2><button class="x" id="close-checkout" aria-label="Mbyll">✕</button></div>
-    <div class="lines" id="co-lines"></div>
-    <form class="form" id="co-form">
-      <div class="field"><label for="co-name">Emri yt</label><input id="co-name" required placeholder="Arben Krasniqi"></div>
-      <div class="field"><label for="co-country">Ku jeton</label><select id="co-country"></select></div>
-      <div class="field"><label for="co-phone">Telefoni / WhatsApp</label><input id="co-phone" required placeholder="+49 170 1234567"></div>
-      <div class="field"><label for="co-city">Komuna në Kosovë</label><select id="co-city"></select></div>
-      <div class="field full"><label for="co-addr">Adresa dhe kush është në shtëpi</label><input id="co-addr" required placeholder="Rr. Nëna Terezë 12, nëna ime Hava"></div>
-      <div class="field"><label for="co-date">Data e dëshiruar</label><input id="co-date" type="date" required></div>
-      <div class="field"><label for="co-time">Orari</label><select id="co-time"><option>Paradite (8–12)</option><option>Pasdite (12–17)</option><option>Çdo kohë</option></select></div>
-      <div class="field full"><label for="co-note">Shënime për punëtorin</label><textarea id="co-note" rows="2" placeholder="p.sh. Çelësi është te fqinji, Bekimi."></textarea></div>
-      <div class="field full"><button class="btn" type="submit" style="padding:12px">Dërgo porosinë</button></div>
-    </form>
-    <p class="note">Paguan vetëm pasi puna përfundon dhe i sheh fotot. Ky është version demo, prandaj asnjë pagesë nuk kryhet.</p>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status"></div>
 
 <script>
 (() => {
-  const $ = (s) => document.querySelector(s);
+  const $ = (s, r = document) => r.querySelector(s);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const eur = (n) => (Math.round(n * 100) / 100).toLocaleString('de-DE', { minimumFractionDigits: n % 1 ? 2 : 0 }) + ' €';
 
-  const store = {
-    get(k, d) { try { const v = localStorage.getItem('nv:' + k); return v == null ? d : JSON.parse(v); } catch { return d; } },
-    set(k, v) { try { localStorage.setItem('nv:' + k, JSON.stringify(v)); return true; } catch { return false; } },
-  };
-
-  const ICONS = {
-    pastrim: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.2 2.2M15.5 15.5l2.2 2.2M6.3 17.7l2.2-2.2M15.5 8.5l2.2-2.2"/>',
-    prinder: '<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
-    riparime: '<path d="M14.5 5.5a4 4 0 0 0 4.9 4.9L11 18.8a2.1 2.1 0 0 1-3-3l8.4-8.4a4 4 0 0 0-1.9-1.9z"/><path d="M4 20l3-3"/>',
-    kopsht: '<path d="M5 19C5 11 11 5 19 5c0 8-6 14-14 14z"/><path d="M5 19l7-7"/>',
-    bosh: '<path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-5h4v5"/>',
-    dokumente: '<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h5"/>',
-    auto: '<path d="M5 16v-4l2-5h10l2 5v4z"/><path d="M5 16v3M19 16v3M8 12h8"/><circle cx="8.5" cy="14" r=".6"/><circle cx="15.5" cy="14" r=".6"/>',
-    familje: '<path d="M12 21v-7"/><circle cx="12" cy="9" r="4"/><path d="M12 14c-3 0-5 2-5 4M12 14c3 0 5 2 5 4"/>',
-    tjeter: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
-  };
-  const icon = (k) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[k] || ICONS.tjeter}</svg>`;
-
-  const BASE_CATS = [
-    { id: 'prinder', name: 'Kujdes për prindërit', note: 'Për ata që mbetën në shtëpi' },
-    { id: 'pastrim', name: 'Pastrim', note: 'Nga një dhomë deri te shtëpia e tërë' },
-    { id: 'riparime', name: 'Riparime dhe mjeshtër', note: 'Mjeshtër të verifikuar' },
-    { id: 'bosh', name: 'Shtëpia kur je larg', note: 'Kontroll dhe përgatitje para ardhjes' },
-    { id: 'kopsht', name: 'Oborri dhe kopshti', note: 'Gjatë gjithë vitit' },
-    { id: 'dokumente', name: 'Fatura dhe dokumente', note: 'Pa radhë në komunë' },
-    { id: 'auto', name: 'Vetura dhe transport', note: 'Regjistrim, servis, aeroport' },
-    { id: 'familje', name: 'Raste familjare', note: 'Me respekt dhe kujdes' },
+  const STATUSES = [
+    { id: 'biseduar', name: 'Kam biseduar' },
+    { id: 'pritje', name: 'Në pritje' },
+    { id: 'oferte', name: 'Për ofertë' },
+    { id: 'nukhapi', name: 'Nuk e hapi' },
+    { id: 'refuzoi', name: 'Refuzoi' },
+    { id: 'marreveshje', name: 'Marrëveshje e lidhur' },
   ];
+  const ALL_ST = [{ id: 'pa', name: 'Pa thirrur' }, ...STATUSES];
+  const stName = (id) => (ALL_ST.find((s) => s.id === id) || ALL_ST[0]).name;
+  const pill = (id) => `<span class="pill" style="color:var(--st-${id});background:var(--st-${id}-bg)">${stName(id)}</span>`;
 
-  const BASE_SERVICES = [
-    ['prinder', 'Blerje ushqimesh dhe dërgesë', 15, '+ produktet', 'Blejmë sipas listës tënde dhe ia sjellim prindërve në derë. Kuponi fotografohet.', 'Më e kërkuara'],
-    ['prinder', 'Vizitë shoqërie dhe kontroll', 12, '/orë', 'Një orë bisedë, kafe dhe kontroll që gjithçka është në rregull. Të dërgojmë një mesazh pas vizitës.'],
-    ['prinder', 'Barnat nga farmacia', 8, '', 'Marrim recetën dhe barnat nga farmacia dhe i dërgojmë në shtëpi.'],
-    ['prinder', 'Shoqërim te mjeku', 25, '', 'Transport vajtje-ardhje dhe shoqërim gjatë vizitës në QKMF ose klinikë.'],
-    ['prinder', 'Gatim për 3 ditë', 35, '+ produktet', 'Ushqim i shtëpisë, i gatuar në kuzhinën e tyre, për tri ditë.'],
-    ['pastrim', 'Pastrim i përgjithshëm', 45, '', 'Kuzhina, banjo, dyshemetë dhe pluhuri në tërë shtëpinë (deri 100 m²).'],
-    ['pastrim', 'Pastrim i thellë para verës', 90, '', 'Shtëpia gati para se të vish me pushime: dollapë, xhama, perde, tepihë.', 'Sezonale'],
-    ['pastrim', 'Larje tepihash', 12, '/copë', 'I marrim, i lajmë në makinë dhe i kthejmë të thatë brenda 3 ditëve.'],
-    ['pastrim', 'Larje dritaresh', 30, '', 'Të gjitha dritaret, nga brenda dhe jashtë, përfshirë kornizat.'],
-    ['riparime', 'Hidraulik', 30, '', 'Rrjedhje, rubineta, bojler. Çmimi përfshin ardhjen dhe orën e parë.'],
-    ['riparime', 'Elektricist', 30, '', 'Priza, drita, siguresa. Çmimi përfshin ardhjen dhe orën e parë.'],
-    ['riparime', 'Servisim i ngrohjes para dimrit', 45, '', 'Kontroll i kaldajës, radiatorëve dhe presionit para tetorit.', 'Sezonale'],
-    ['riparime', 'Lyerje e një dhome', 80, '', 'Deri 20 m², me ngjyrë të bardhë. Ngjyrat e tjera sipas marrëveshjes.'],
-    ['riparime', 'Kontroll i kulmit', 40, '', 'Kontrollojmë tjegullat dhe ulluqet pas stuhive, me foto nga lart.'],
-    ['riparime', 'Montim mobiljesh', 25, '/orë', 'Montojmë mobiljet e reja ose i zhvendosim.'],
-    ['bosh', 'Kontroll mujor i shtëpisë', 20, '/muaj', 'Një vizitë në muaj: ujë, rrymë, lagështi, dyer. Raport me 10 foto.', 'Abonim'],
-    ['bosh', 'Mbushja e frigoriferit para ardhjes', 20, '+ produktet', 'Kur arrin natën nga rruga, gjen bukë, qumësht dhe ujë në shtëpi.'],
-    ['bosh', 'Hapja e shtëpisë pas dimrit', 15, '', 'Ajrosje, lëshim i ujit dhe kontroll i gypave pas ngricave.'],
-    ['kopsht', 'Kositje bari', 25, '', 'Deri 500 m², me pastrim të barit pas kositjes.'],
-    ['kopsht', 'Krasitje pemësh', 35, '', 'Krasitja e pemëve të oborrit në kohën e duhur të vitit.'],
-    ['kopsht', 'Pastrim bore', 20, '', 'Pastrojmë hyrjen dhe shtegun që prindërit të mos rrëshqasin.'],
-    ['kopsht', 'Ujitje gjatë verës', 20, '/muaj', 'Ujitje e kopshtit dhe luleve dy herë në javë.'],
-    ['dokumente', 'Pagesa e faturave', 5, '/faturë', 'Rryma (KESCO), uji, mbeturinat. Të dërgojmë foton e fletëpagesës.'],
-    ['dokumente', 'Tatimi në pronë', 10, '', 'E paguajmë në komunë dhe ta dërgojmë vërtetimin.'],
-    ['dokumente', 'Marrje dokumentesh nga komuna', 20, '', 'Certifikata, ekstrakte dhe vërtetime nga gjendja civile, me autorizim.'],
-    ['auto', 'Regjistrim i veturës', 25, '', 'E çojmë veturën në kontrollin teknik dhe e regjistrojmë për ty.'],
-    ['auto', 'Marrje nga aeroporti', 35, '', 'Nga Aeroporti i Prishtinës deri në shtëpi, çdo orë. Për Shkupin dhe Tiranën pyet për çmimin.'],
-    ['auto', 'Larje dhe servis i veturës', 20, '', 'Larje e plotë, ndërrim vaji dhe kontroll para rrugës.'],
-    ['familje', 'Mirëmbajtje e varrit', 25, '', 'Pastrim, lule të freskëta dhe foto, para festave ose përvjetorëve.'],
-    ['familje', 'Lule dhe dhurata', 15, '+ produktet', 'Për ditëlindje, Ditën e Nënës ose festa. Të dërgojmë foto kur dorëzohen.'],
-    ['familje', 'Ndihmë për mikpritje', 60, '', 'Ndihmë me përgatitjet, shërbimin e mysafirëve dhe pastrimin pas tyre.'],
-  ].map(([cat, name, price, unit, desc, tag], i) => ({ id: 'b' + i, cat, name, price, unit, desc, tag }));
+  const KOMUNAT = ['Prishtinë', 'Prizren', 'Ferizaj', 'Pejë', 'Gjakovë', 'Gjilan', 'Mitrovicë', 'Podujevë', 'Vushtrri', 'Suharekë', 'Rahovec', 'Drenas', 'Lipjan', 'Malishevë', 'Kamenicë', 'Viti', 'Deçan', 'Istog', 'Klinë', 'Skenderaj', 'Dragash', 'Fushë Kosovë', 'Kaçanik', 'Shtime', 'Obiliq', 'Junik', 'Hani i Elezit', 'Mamushë', 'Novobërdë', 'Graçanicë', 'Ranillug', 'Kllokot', 'Partesh', 'Shtërpcë', 'Mitrovicë e Veriut', 'Zveçan', 'Zubin Potok', 'Leposaviq'];
+  const MARKAT = ['Volkswagen', 'Mercedes-Benz', 'BMW', 'Audi', 'Opel', 'Ford', 'Renault', 'Peugeot', 'Škoda', 'Toyota', 'Fiat', 'Seat', 'Citroën', 'Hyundai', 'Kia', 'Dacia', 'Nissan', 'Volvo', 'Mazda', 'Honda', 'Land Rover', 'Porsche', 'Tjetër'];
+  const NGJYRAT = ['E zezë', 'E bardhë', 'Gri', 'Argjend', 'Blu', 'E kuqe', 'E gjelbër', 'Kafe', 'Bezhë', 'E verdhë', 'Portokalli', 'Tjetër'];
 
-  const CITIES = ['Prishtinë', 'Prizren', 'Pejë', 'Gjakovë', 'Mitrovicë', 'Ferizaj', 'Gjilan', 'Vushtrri', 'Podujevë', 'Suharekë', 'Rahovec', 'Drenas', 'Lipjan', 'Malishevë', 'Kamenicë', 'Viti', 'Deçan', 'Istog', 'Klinë', 'Skenderaj', 'Dragash', 'Kaçanik', 'Shtime', 'Obiliq', 'Fushë Kosovë'];
-  const COUNTRIES = ['Gjermani', 'Zvicër', 'Austri', 'Suedi', 'Francë', 'Itali', 'Belgjikë', 'Holandë', 'Mbretëri e Bashkuar', 'SHBA', 'Tjetër'];
-  const WORKERS = ['Bekim H. (Prishtinë)', 'Valdete K. (Prishtinë)', 'Fatmir B. (Prizren)', 'Arta M. (Pejë)', 'Driton S. (Ferizaj)', 'Liridona G. (Gjilan)'];
-  const STATUSES = [['e-re', 'E re'], ['pranuar', 'E pranuar'], ['ne-pune', 'Në punë'], ['perfunduar', 'Përfunduar']];
-
-  let customServices = store.get('services', []);
-  let customCats = store.get('cats', []);
-  let cart = store.get('cart', {});
-  let orders = store.get('orders', null);
-  let activeCat = 'all';
-  let query = '';
-
-  const cats = () => [...BASE_CATS, ...customCats];
-  const services = () => [...BASE_SERVICES, ...customServices];
-  const findSvc = (id) => services().find((s) => s.id === id);
-
-  if (!orders) {
-    const d = (n) => new Date(Date.now() - n * 864e5).toISOString().slice(0, 10);
-    orders = [
-      { id: 1042, demo: true, created: d(2), name: 'Arben Krasniqi', country: 'Gjermani', phone: '+49 170 555 0142', city: 'Prishtinë', addr: 'Lagjja Dardania, nëna Hava', date: d(1), time: 'Paradite (8–12)', note: 'Çelësi te fqinji.', items: [{ name: 'Pastrim i përgjithshëm', price: 45, qty: 1 }, { name: 'Larje dritaresh', price: 30, qty: 1 }], status: 'perfunduar', worker: WORKERS[1], photos: { before: 'sample', after: 'sample' } },
-      { id: 1043, demo: true, created: d(0), name: 'Arben Krasniqi', country: 'Gjermani', phone: '+49 170 555 0142', city: 'Prishtinë', addr: 'Lagjja Dardania, nëna Hava', date: d(-2), time: 'Çdo kohë', note: '', items: [{ name: 'Blerje ushqimesh dhe dërgesë', price: 15, qty: 1 }, { name: 'Barnat nga farmacia', price: 8, qty: 1 }], status: 'ne-pune', worker: WORKERS[0], photos: {} },
-      { id: 1044, demo: true, created: d(0), name: 'Shqipe Berisha', country: 'Zvicër', phone: '+41 79 555 0188', city: 'Prizren', addr: 'Rr. e Shadërvanit, babai Rexhep', date: d(-5), time: 'Pasdite (12–17)', note: 'Babai dëgjon pak, trokitni fort.', items: [{ name: 'Kositje bari', price: 25, qty: 1 }], status: 'e-re', worker: '', photos: {} },
-    ];
-    store.set('orders', orders);
+  // ---------- Numrat ----------
+  function normalize(raw) {
+    let d = String(raw || '').replace(/\D/g, '');
+    if (d.startsWith('00')) d = d.slice(2);
+    if (d.startsWith('383')) { /* ok */ }
+    else if (d.length === 9 && d.startsWith('0')) d = '383' + d.slice(1);
+    else if (d.length === 8 && /^[4-9]/.test(d)) d = '383' + d;
+    if (d.length < 8 || d.length > 15) return null;
+    return d;
+  }
+  function pretty(d) {
+    if (d.startsWith('383') && d.length === 11) { const l = '0' + d.slice(3); return `${l.slice(0, 3)} ${l.slice(3, 6)} ${l.slice(6)}`; }
+    return '+' + d;
+  }
+  function extractNumbers(text) {
+    return String(text).split(/[\n\r,;|]+/).flatMap((part) => part.match(/\+?\d[\d \t\-\/.()]{5,}\d/g) || []).map((x) => x.trim());
   }
 
-  // Toast
+  // ---------- Koha ----------
+  const MUAJT = ['jan', 'shk', 'mar', 'pri', 'maj', 'qer', 'kor', 'gus', 'sht', 'tet', 'nën', 'dhj'];
+  const pad = (n) => String(n).padStart(2, '0');
+  const dayKey = (t) => { const d = new Date(t); return d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(); };
+  function when(t) {
+    const d = new Date(t), now = new Date();
+    const hm = pad(d.getHours()) + ':' + pad(d.getMinutes());
+    if (dayKey(t) === dayKey(now)) return 'sot ' + hm;
+    if (dayKey(t) === dayKey(now - 864e5)) return 'dje ' + hm;
+    return d.getDate() + ' ' + MUAJT[d.getMonth()] + ' ' + hm;
+  }
+
+  // ---------- Toast ----------
   let tt;
-  const toast = (m) => { const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2200); };
+  function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('show'), 2600); }
 
-  // Views
-  function show(view) {
-    if (!['sherbimet', 'porosite', 'paneli'].includes(view)) view = 'sherbimet';
-    document.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', t.dataset.view === view));
-    ['sherbimet', 'porosite', 'paneli'].forEach((v) => { $('#view-' + v).hidden = v !== view; });
-    if (location.hash.slice(1) !== view) history.replaceState(null, '', '#' + view);
-    if (view === 'porosite') renderMyOrders();
-    if (view === 'paneli') renderAdmin();
-    renderCartBar();
-    window.scrollTo(0, 0);
-  }
-  document.querySelectorAll('.tab').forEach((t) => t.addEventListener('click', () => show(t.dataset.view)));
+  // ---------- Ruajtja: db brenda Claude, përndryshe ky kompjuter ----------
+  const recs = new Map();
+  const Store = {
+    mode: 'loading', col: null,
+    async init() {
+      const use = window.claude?.use?.bind(window.claude);
+      if (use) {
+        try {
+          const [db, user] = await Promise.all([use('db'), use('user')]);
+          const uid = user ? await user.id() : null;
+          if (db && uid) {
+            this.col = db.doc('data/users/' + uid + '/app').collection('numrat');
+            this.mode = 'db';
+            this.col.onSnapshot((snap) => {
+              recs.clear();
+              snap.docs.forEach((d) => recs.set(d.id, { ...d.data(), id: d.id }));
+              render();
+            }, (e) => { toast('Lidhja me ruajtjen u ndërpre. Rifresko faqen.'); console.warn(e); });
+            return;
+          }
+        } catch (e) { console.warn(e); }
+      }
+      this.mode = 'local';
+      try { (JSON.parse(localStorage.getItem('thirrjet:v1') || '[]')).forEach((r) => recs.set(r.id, r)); } catch {}
+      render();
+    },
+    queue: new Map(),
+    save(rec) {
+      recs.set(rec.id, rec);
+      if (this.mode === 'local') {
+        try { localStorage.setItem('thirrjet:v1', JSON.stringify([...recs.values()])); } catch { toast('Nuk u ruajt: memoria e shfletuesit është plot.'); }
+        return Promise.resolve();
+      }
+      const body = { ...rec }; delete body.id;
+      const prev = this.queue.get(rec.id) || Promise.resolve();
+      const next = prev.then(() => this.col.doc(rec.id).set(body)).catch((e) => {
+        toast(e?.code === 'quota_exceeded' ? 'Lista është plot. Fshi numrat e vjetër.' : 'Nuk u ruajt. Kontrollo internetin dhe provo prapë.');
+        console.warn(e);
+      });
+      this.queue.set(rec.id, next);
+      return next;
+    },
+    remove(id) {
+      recs.delete(id);
+      if (this.mode === 'local') { try { localStorage.setItem('thirrjet:v1', JSON.stringify([...recs.values()])); } catch {} return; }
+      const prev = this.queue.get(id) || Promise.resolve();
+      this.queue.set(id, prev.then(() => this.col.doc(id).delete()).catch(() => toast('Nuk u fshi. Provo prapë.')));
+    },
+  };
+  const idFor = (d) => 'n' + d;
 
-  // Catalog
-  function renderChips() {
-    const all = [{ id: 'all', name: 'Të gjitha' }, ...cats()];
-    $('#chips').innerHTML = all.map((c) => `<button class="chip" aria-pressed="${c.id === activeCat}" data-cat="${esc(c.id)}">${esc(c.name)}</button>`).join('');
-  }
-  $('#chips').addEventListener('click', (e) => { const b = e.target.closest('.chip'); if (!b) return; activeCat = b.dataset.cat; renderChips(); renderCatalog(); });
-  $('#q').addEventListener('input', (e) => { query = e.target.value.trim().toLowerCase(); renderCatalog(); });
-
-  function renderCatalog() {
-    const list = services().filter((s) => (activeCat === 'all' || s.cat === activeCat) && (!query || (s.name + ' ' + s.desc).toLowerCase().includes(query)));
-    const html = cats().map((c) => {
-      const items = list.filter((s) => s.cat === c.id);
-      if (!items.length) return '';
-      return `<div class="cat-block"><div class="cat-head"><span class="ico">${icon(c.icon || c.id)}</span><div><h2>${esc(c.name)}</h2><span>${esc(c.note || '')}</span></div></div><div class="grid">${items.map(card).join('')}</div></div>`;
-    }).join('');
-    $('#catalog').innerHTML = html || `<div class="empty">Asnjë shërbim nuk përputhet me “${esc(query)}”. Provo një fjalë tjetër.</div>`;
-  }
-  function card(s) {
-    const inCart = cart[s.id];
-    return `<article class="svc">${s.tag ? `<span class="tag">${esc(s.tag)}</span>` : ''}<h3>${esc(s.name)}</h3><p>${esc(s.desc)}</p>
-      <div class="svc-foot"><span class="price">${eur(+s.price)} <small>${esc(s.unit)}</small></span>
-      <button class="btn small ${inCart ? 'added' : ''}" data-add="${esc(s.id)}">${inCart ? '✓ ' + inCart + ' në porosi' : 'Shto'}</button></div></article>`;
-  }
-  $('#catalog').addEventListener('click', (e) => {
-    const b = e.target.closest('[data-add]'); if (!b) return;
-    const id = b.dataset.add; cart[id] = (cart[id] || 0) + 1; store.set('cart', cart);
-    renderCatalog(); renderCartBar();
-  });
-
-  // Cart
-  const cartLines = () => Object.entries(cart).map(([id, qty]) => ({ svc: findSvc(id), qty })).filter((l) => l.svc);
-  const cartTotal = () => cartLines().reduce((a, l) => a + l.svc.price * l.qty, 0);
-  function renderCartBar() {
-    const lines = cartLines(), n = lines.reduce((a, l) => a + l.qty, 0);
-    $('#cartbar').hidden = !n || $('#view-sherbimet').hidden;
-    $('#cart-n').textContent = n + (n === 1 ? ' shërbim' : ' shërbime');
-    $('#cart-total').textContent = eur(cartTotal());
-  }
-  function renderLines() {
-    const lines = cartLines();
-    if (!lines.length) { closeCheckout(); return; }
-    $('#co-lines').innerHTML = lines.map((l) => `<div class="line"><div class="n"><b>${esc(l.svc.name)}</b><div class="meta">${eur(+l.svc.price)} ${esc(l.svc.unit)}</div></div>
-      <div class="qty"><button type="button" data-dec="${esc(l.svc.id)}" aria-label="Pakëso">−</button><span>${l.qty}</span><button type="button" data-inc="${esc(l.svc.id)}" aria-label="Shto">+</button></div>
-      <span class="num">${eur(l.svc.price * l.qty)}</span></div>`).join('') + `<div class="total"><span>Totali${lines.some((l) => l.svc.unit.includes('produkt')) ? ' (pa produktet)' : ''}</span><span class="num">${eur(cartTotal())}</span></div>`;
-  }
-  $('#co-lines').addEventListener('click', (e) => {
-    const inc = e.target.closest('[data-inc]'), dec = e.target.closest('[data-dec]');
-    if (inc) cart[inc.dataset.inc]++;
-    if (dec) { const id = dec.dataset.dec; if (--cart[id] <= 0) delete cart[id]; }
-    store.set('cart', cart); renderLines(); renderCatalog(); renderCartBar();
-  });
-  function openCheckout() { renderLines(); $('#checkout').hidden = false; $('#co-name').focus(); }
-  function closeCheckout() { $('#checkout').hidden = true; }
-  $('#open-checkout').addEventListener('click', openCheckout);
-  $('#close-checkout').addEventListener('click', closeCheckout);
-  $('#checkout').addEventListener('click', (e) => { if (e.target.id === 'checkout') closeCheckout(); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCheckout(); });
-
-  $('#co-country').innerHTML = COUNTRIES.map((c) => `<option>${c}</option>`).join('');
-  $('#co-city').innerHTML = CITIES.map((c) => `<option>${c}</option>`).join('');
-  $('#co-date').min = new Date().toISOString().slice(0, 10);
-
-  $('#co-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const order = {
-      id: Math.max(1000, ...orders.map((o) => o.id)) + 1, created: new Date().toISOString().slice(0, 10),
-      name: $('#co-name').value.trim(), country: $('#co-country').value, phone: $('#co-phone').value.trim(),
-      city: $('#co-city').value, addr: $('#co-addr').value.trim(), date: $('#co-date').value, time: $('#co-time').value,
-      note: $('#co-note').value.trim(), items: cartLines().map((l) => ({ name: l.svc.name, price: +l.svc.price, qty: l.qty })),
-      status: 'e-re', worker: '', photos: {},
-    };
-    orders.unshift(order); store.set('orders', orders);
-    cart = {}; store.set('cart', cart);
-    e.target.reset(); closeCheckout(); renderCatalog();
-    toast('Porosia #' + order.id + ' u dërgua'); renderCount();
-    show('porosite');
-  });
-
-  // Orders
-  const total = (o) => o.items.reduce((a, i) => a + i.price * i.qty, 0);
-  const statusIdx = (s) => STATUSES.findIndex(([k]) => k === s);
-  const pill = (s) => `<span class="pill s-${s}">${STATUSES[statusIdx(s)][1]}</span>`;
-  const MONTHS = ['janar', 'shkurt', 'mars', 'prill', 'maj', 'qershor', 'korrik', 'gusht', 'shtator', 'tetor', 'nëntor', 'dhjetor'];
-  const fmtDate = (d) => { if (!d) return ''; const x = new Date(d + 'T12:00'); return x.getDate() + ' ' + MONTHS[x.getMonth()]; };
-
-  function photoSlot(o, which, admin) {
-    const src = o.photos?.[which], lbl = which === 'before' ? 'Para' : 'Pas';
-    if (src === 'sample') return `<div class="photo sample"><span class="lbl">${lbl} · shembull</span><canvas data-sample="${which}"></canvas></div>`;
-    if (src) return `<div class="photo"><span class="lbl">${lbl}</span><img src="${src}" alt="Foto ${lbl.toLowerCase()} punës"></div>`;
-    if (admin) return `<div class="photo"><span class="lbl">${lbl}</span><label class="upload">+ Ngarko foton<input type="file" accept="image/*" data-photo="${which}" data-order="${o.id}"></label></div>`;
-    return `<div class="photo"><span class="lbl">${lbl}</span>${o.status === 'perfunduar' ? 'Pa foto' : 'Foto shfaqet kur punëtori e ngarkon'}</div>`;
-  }
-
-  function orderCard(o, admin) {
-    const i = statusIdx(o.status);
-    return `<article class="order">
-      <div class="order-top"><div><h3>Porosia #${o.id}${o.demo ? '<span class="demo-tag">shembull</span>' : ''}</h3>
-        <div class="meta">${esc(o.city)} · ${fmtDate(o.date)}, ${esc(o.time)}${admin ? ` · ${esc(o.name)} nga ${esc(o.country)}, ${esc(o.phone)}` : ''}</div></div>
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">${pill(o.status)}<div class="price">${eur(total(o))}</div></div></div>
-      <div class="items">${o.items.map((it) => `<span>${esc(it.name)}${it.qty > 1 ? ' × ' + it.qty : ''}</span>`).join('')}</div>
-      ${admin ? `<div class="meta">${esc(o.addr)}${o.note ? ' · “' + esc(o.note) + '”' : ''}</div>` : ''}
-      <div class="steps">${STATUSES.map(([, n], k) => `<div class="step ${k <= i ? 'done' : ''}">${n}</div>`).join('')}</div>
-      ${!admin && o.worker ? `<div class="meta">Punëtori: <b style="color:var(--text)">${esc(o.worker)}</b></div>` : ''}
-      <div class="photos">${photoSlot(o, 'before', admin)}${photoSlot(o, 'after', admin)}</div>
-      ${admin ? `<div class="admin-controls">
-        <select data-status="${o.id}" aria-label="Statusi">${STATUSES.map(([k, n]) => `<option value="${k}" ${k === o.status ? 'selected' : ''}>${n}</option>`).join('')}</select>
-        <select data-worker="${o.id}" aria-label="Punëtori"><option value="">Cakto punëtorin…</option>${WORKERS.map((w) => `<option ${w === o.worker ? 'selected' : ''}>${w}</option>`).join('')}</select>
-        ${o.photos?.before && o.photos.before !== 'sample' || o.photos?.after && o.photos.after !== 'sample' ? `<button class="link-danger" data-clearphotos="${o.id}">Fshi fotot</button>` : ''}
-      </div>` : ''}
-    </article>`;
-  }
-
-  function drawSamples(root) {
-    root.querySelectorAll('canvas[data-sample]').forEach((cv) => {
-      const r = cv.getBoundingClientRect(), dpr = devicePixelRatio || 1;
-      cv.width = r.width * dpr; cv.height = r.height * dpr;
-      const c = cv.getContext('2d'); c.scale(dpr, dpr);
-      const w = r.width, h = r.height, after = cv.dataset.sample === 'after';
-      c.fillStyle = after ? '#dfe8f2' : '#c9c1b2'; c.fillRect(0, 0, w, h * .62);
-      c.fillStyle = after ? '#b98b5e' : '#8a7560'; c.fillRect(0, h * .62, w, h);
-      c.fillStyle = after ? '#f8fbff' : '#b4ab9b'; c.fillRect(w * .58, h * .12, w * .28, h * .34);
-      c.strokeStyle = '#6d5a47'; c.lineWidth = 3; c.strokeRect(w * .58, h * .12, w * .28, h * .34);
-      c.fillStyle = after ? '#6b8fc9' : '#7f7466'; c.fillRect(w * .1, h * .44, w * .38, h * .26);
-      if (!after) { c.fillStyle = 'rgb(70 55 40 / .35)'; for (let k = 0; k < 14; k++) { c.beginPath(); c.ellipse((k * 53 % 97) / 97 * w, h * .66 + (k * 31 % 29) / 29 * h * .3, 10 + k % 4 * 5, 5 + k % 3 * 2, 0, 0, 7); c.fill(); } }
-      else { c.fillStyle = 'rgb(255 255 255 / .5)'; c.beginPath(); c.moveTo(w * .62, h * .15); c.lineTo(w * .7, h * .15); c.lineTo(w * .62, h * .3); c.fill(); }
+  function addNumbers(list) {
+    let n = 0; const now = Date.now();
+    list.forEach((d, i) => {
+      const id = idFor(d);
+      if (recs.has(id)) return;
+      Store.save({ id, phone: d, status: 'pa', calls: [], created: now + i, updated: now + i });
+      n++;
     });
+    render();
+    return n;
   }
 
-  function renderMyOrders() {
-    const el = $('#my-orders');
-    el.innerHTML = orders.length ? orders.map((o) => orderCard(o, false)).join('') : '<div class="empty">Nuk ke asnjë porosi ende. Zgjidh një shërbim te “Shërbimet”.</div>';
-    drawSamples(el);
+  // ---------- Gjendja e pamjes ----------
+  let filter = 'all', query = '', sortBy = 'created', selected = null, limit = 200;
+
+  function callsOf(r) { return (r.calls || []).length; }
+  function matches(r) {
+    if (filter !== 'all' && r.status !== filter) return false;
+    if (!query) return true;
+    const hay = [pretty(r.phone), r.phone, r.emri, r.mbiemri, r.vendi, r.komuna, r.marka, r.modeli, r.ngjyra, r.shenime].join(' ').toLowerCase();
+    const qd = query.replace(/\D/g, '');
+    return hay.includes(query) || (qd.length >= 3 && r.phone.includes(qd.replace(/^0/, '')));
   }
-  function renderCount() {
-    const n = orders.filter((o) => o.status !== 'perfunduar').length;
-    const c = $('#order-count'); c.hidden = !n; c.textContent = n;
+  function sorted() {
+    const all = [...recs.values()];
+    return sortBy === 'updated' ? all.sort((a, b) => (b.updated || 0) - (a.updated || 0)) : all.sort((a, b) => (a.created || 0) - (b.created || 0));
   }
 
-  // Admin
-  function renderAdmin() {
-    const active = orders.filter((o) => o.status !== 'perfunduar').length;
-    const revenue = orders.filter((o) => o.status === 'perfunduar').reduce((a, o) => a + total(o), 0);
+  function render() {
+    $('#mode').textContent = Store.mode === 'db'
+      ? 'Ruhet automatikisht në llogarinë tënde · ' + recs.size + ' numra'
+      : Store.mode === 'local' ? 'Ruhet në këtë kompjuter · ' + recs.size + ' numra' : 'Duke u ngarkuar…';
+    renderStats(); renderFilters(); renderRows(); renderDetail();
+  }
+
+  function renderStats() {
+    const all = [...recs.values()], today = dayKey(Date.now());
+    let callsToday = 0, dealsToday = 0;
+    all.forEach((r) => (r.calls || []).forEach((c) => { if (dayKey(c.t) === today) { callsToday++; if (c.s === 'marreveshje') dealsToday++; } }));
+    const cnt = (s) => all.filter((r) => r.status === s).length;
     $('#stats').innerHTML = [
-      [orders.filter((o) => o.status === 'e-re').length, 'Porosi të reja'],
-      [active, 'Aktive'],
-      [eur(revenue), 'Të ardhura (përfunduar)'],
-      [services().length, 'Shërbime në katalog'],
-    ].map(([v, l]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
-    const el = $('#admin-orders');
-    el.innerHTML = orders.map((o) => orderCard(o, true)).join('');
-    drawSamples(el);
-    renderCustomList();
-  }
-  const updateOrder = (id, fn) => { const o = orders.find((x) => x.id === +id); if (!o) return; fn(o); store.set('orders', orders); renderAdmin(); renderCount(); };
-  $('#admin-orders').addEventListener('change', (e) => {
-    const t = e.target;
-    if (t.dataset.status) updateOrder(t.dataset.status, (o) => { o.status = t.value; toast('Statusi: ' + STATUSES[statusIdx(t.value)][1]); });
-    if (t.dataset.worker) updateOrder(t.dataset.worker, (o) => { o.worker = t.value; if (t.value && o.status === 'e-re') o.status = 'pranuar'; toast('Punëtori u caktua'); });
-    if (t.dataset.photo && t.files[0]) resizeImage(t.files[0]).then((url) => {
-      updateOrder(t.dataset.order, (o) => { o.photos = { ...o.photos, [t.dataset.photo]: url }; });
-      if (!store.set('orders', orders)) toast('Hapësira për foto u mbush. Fshi disa foto.'); else toast('Fotoja u ngarkua');
-    });
-  });
-  $('#admin-orders').addEventListener('click', (e) => {
-    const b = e.target.closest('[data-clearphotos]'); if (b) updateOrder(b.dataset.clearphotos, (o) => { o.photos = {}; });
-  });
-  function resizeImage(file) {
-    return new Promise((res, rej) => {
-      const r = new FileReader();
-      r.onload = () => { const img = new Image(); img.onload = () => {
-        const s = Math.min(1, 900 / Math.max(img.width, img.height)), cv = document.createElement('canvas');
-        cv.width = img.width * s; cv.height = img.height * s; cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
-        res(cv.toDataURL('image/jpeg', .72)); }; img.onerror = rej; img.src = r.result; };
-      r.onerror = rej; r.readAsDataURL(file);
-    });
+      [callsToday, 'Thirrje sot'],
+      [dealsToday, 'Marrëveshje sot', 'hl'],
+      [cnt('pa'), 'Pa thirrur ende'],
+      [cnt('pritje') + cnt('oferte'), 'Për t\'i rithirrur'],
+      [cnt('marreveshje'), 'Marrëveshje gjithsej', 'hl'],
+    ].map(([v, l, c]) => `<div class="stat ${c || ''}"><b>${v}</b><span>${l}</span></div>`).join('');
   }
 
-  // Add service
-  function renderCatSelect() {
-    $('#ns-cat').innerHTML = cats().map((c) => `<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('') + '<option value="__new">+ Kategori e re…</option>';
+  function renderFilters() {
+    const all = [...recs.values()];
+    const items = [{ id: 'all', name: 'Të gjithë', c: all.length }, ...ALL_ST.map((s) => ({ ...s, c: all.filter((r) => r.status === s.id).length }))];
+    $('#filters').innerHTML = items.map((s) => `<button class="chip" data-f="${s.id}" aria-pressed="${filter === s.id}">${s.name}<span class="c">${s.c}</span></button>`).join('');
   }
-  $('#ns-cat').addEventListener('change', (e) => { $('#ns-newcat-wrap').hidden = e.target.value !== '__new'; });
-  $('#svc-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    let cat = $('#ns-cat').value;
-    if (cat === '__new') {
-      const name = $('#ns-newcat').value.trim();
-      if (!name) { $('#ns-newcat').focus(); toast('Shkruaj emrin e kategorisë'); return; }
-      cat = 'c' + Date.now(); customCats.push({ id: cat, name, note: 'Kategori e shtuar nga ti', icon: 'tjeter' }); store.set('cats', customCats);
+
+  function renderRows() {
+    const el = $('#rows');
+    if (Store.mode === 'loading') { el.innerHTML = '<div class="empty"><span class="spin" style="display:inline-block"></span></div>'; return; }
+    if (!recs.size) {
+      el.innerHTML = `<div class="empty"><h3>Lista është bosh</h3>
+        <ol><li>Kliko <b>Shto numra</b> dhe bëj foto fletës me numrat që të jep firma.</li>
+        <li>Kliko një numër, thirre dhe zgjidh si shkoi biseda.</li>
+        <li>Plotëso të dhënat e klientit dhe veturës. Ruhen vetë.</li></ol><br>
+        <button class="btn primary" data-open-add>Shto numrat e parë</button></div>`;
+      return;
     }
-    customServices.push({ id: 's' + Date.now(), cat, name: $('#ns-name').value.trim(), price: +$('#ns-price').value, unit: $('#ns-unit').value, desc: $('#ns-desc').value.trim() || 'Shërbim i ri.', tag: 'E re', custom: true });
-    store.set('services', customServices);
-    e.target.reset(); $('#ns-newcat-wrap').hidden = true;
-    renderCatSelect(); renderChips(); renderCatalog(); renderAdmin();
-    toast('Shërbimi u shtua në katalog');
-  });
-  function renderCustomList() {
-    $('#custom-list').innerHTML = customServices.length
-      ? '<b style="font-size:.85rem;color:var(--muted)">Shërbimet që ke shtuar</b>' + customServices.map((s) => `<div><span>${esc(s.name)} · ${eur(s.price)}</span><button class="link-danger" data-del="${esc(s.id)}">Fshi</button></div>`).join('')
-      : '';
+    const list = sorted().filter(matches);
+    if (!list.length) { el.innerHTML = '<div class="empty">Asnjë numër nuk përputhet me kërkimin ose filtrin.</div>'; return; }
+    el.innerHTML = list.slice(0, limit).map((r) => {
+      const n = callsOf(r);
+      const who = [[r.emri, r.mbiemri].filter(Boolean).join(' '), r.komuna, [r.marka, r.modeli, r.viti].filter(Boolean).join(' ')].filter(Boolean);
+      return `<button class="row ${selected === r.id ? 'sel' : ''}" data-id="${r.id}">
+        <span class="ph">${pretty(r.phone)}</span>
+        <span class="who">${who.length ? `<b>${esc(who[0])}</b>${who.slice(1).map((w) => ' · ' + esc(w)).join('')}` : '—'}</span>
+        <span class="right">${n ? `<span class="calls ${n >= 2 ? 'warn' : ''}">${n}× thirrur</span>` : ''}${pill(r.status)}</span>
+      </button>`;
+    }).join('') + (list.length > limit ? `<div class="more"><button class="btn small" id="more">Shfaq edhe ${Math.min(200, list.length - limit)} (gjithsej ${list.length})</button></div>` : '');
   }
-  $('#custom-list').addEventListener('click', (e) => {
-    const b = e.target.closest('[data-del]'); if (!b) return;
-    customServices = customServices.filter((s) => s.id !== b.dataset.del);
-    customCats = customCats.filter((c) => customServices.some((s) => s.cat === c.id));
-    delete cart[b.dataset.del];
-    store.set('services', customServices); store.set('cats', customCats); store.set('cart', cart);
-    if (!cats().some((c) => c.id === activeCat)) activeCat = 'all';
-    renderCatSelect(); renderChips(); renderCatalog(); renderAdmin(); toast('Shërbimi u fshi');
+
+  // ---------- Detajet ----------
+  let detailFor = null;
+  function renderDetail() {
+    const el = $('#detail');
+    const r = selected && recs.get(selected);
+    el.classList.toggle('idle', !r);
+    if (!r) {
+      detailFor = null;
+      el.innerHTML = `<div class="d-empty"><h3 style="color:var(--text);margin-bottom:6px">Zgjidh një numër</h3>Kliko një numër nga lista, ose <b>Thirrja e radhës</b> për numrin e parë që s'është thirrur.<br><br>Shkurtesat: tastet <b>1–6</b> zgjedhin statusin, <b>N</b> hap numrin e radhës.</div>`;
+      return;
+    }
+    // Mos e rivizato formularin ndërsa ajo shkruan; rifresko vetëm pjesët e tjera.
+    if (detailFor === r.id && el.contains(document.activeElement) && document.activeElement.matches('input,select,textarea')) {
+      $('#d-status', el).innerHTML = statusButtons(r); $('#d-hist', el).innerHTML = histHtml(r); $('#d-meta', el).innerHTML = metaHtml(r);
+      return;
+    }
+    detailFor = r.id;
+    const opt = (list, v) => `<option value="">—</option>` + list.map((x) => `<option ${x === v ? 'selected' : ''}>${esc(x)}</option>`).join('') + (v && !list.includes(v) ? `<option selected>${esc(v)}</option>` : '');
+    el.innerHTML = `
+      <div class="d-head">
+        <div class="d-num"><button class="btn small d-close" id="d-close">← Lista</button><h2>${pretty(r.phone)}</h2><button class="btn small" id="d-copy">Kopjo</button></div>
+        <div id="d-meta">${metaHtml(r)}</div>
+      </div>
+      <div class="d-sec"><h3>Si shkoi thirrja?</h3><div class="status-grid" id="d-status">${statusButtons(r)}</div></div>
+      <div class="d-sec"><h3>Klienti <span class="saved" id="d-saved"></span></h3>
+        <div class="form" id="d-form">
+          <div class="f"><label for="f-emri">Emri</label><input id="f-emri" data-k="emri" value="${esc(r.emri)}" autocomplete="off"></div>
+          <div class="f"><label for="f-mbiemri">Mbiemri</label><input id="f-mbiemri" data-k="mbiemri" value="${esc(r.mbiemri)}" autocomplete="off"></div>
+          <div class="f"><label for="f-komuna">Komuna</label><select id="f-komuna" data-k="komuna">${opt(KOMUNAT, r.komuna)}</select></div>
+          <div class="f"><label for="f-vendi">Vendi / fshati / lagjja</label><input id="f-vendi" data-k="vendi" value="${esc(r.vendi)}" autocomplete="off"></div>
+        </div>
+      </div>
+      <div class="d-sec"><h3>Vetura</h3>
+        <div class="form">
+          <div class="f"><label for="f-marka">Marka</label><select id="f-marka" data-k="marka">${opt(MARKAT, r.marka)}</select></div>
+          <div class="f"><label for="f-modeli">Modeli / lloji</label><input id="f-modeli" data-k="modeli" value="${esc(r.modeli)}" placeholder="p.sh. Golf 7" autocomplete="off"></div>
+          <div class="f"><label for="f-viti">Viti</label><input id="f-viti" data-k="viti" value="${esc(r.viti)}" inputmode="numeric" maxlength="4" placeholder="2016" autocomplete="off"></div>
+          <div class="f"><label for="f-ngjyra">Ngjyra</label><select id="f-ngjyra" data-k="ngjyra">${opt(NGJYRAT, r.ngjyra)}</select></div>
+          <div class="f full"><label for="f-data">Data e veturës (regjistrimi)</label><input id="f-data" type="date" data-k="data" value="${esc(r.data)}"></div>
+          <div class="f full"><label for="f-shenime">Shënime</label><textarea id="f-shenime" data-k="shenime" rows="2" placeholder="p.sh. Thirre pas orës 17, flet me burrin">${esc(r.shenime)}</textarea></div>
+        </div>
+      </div>
+      <div class="d-sec"><h3>Historia e thirrjeve</h3><div class="hist" id="d-hist">${histHtml(r)}</div>
+        <div style="margin-top:14px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap" id="d-danger">
+          <button class="link" id="d-undo" ${callsOf(r) ? '' : 'hidden'}>Anulo statusin e fundit</button>
+          <button class="link danger" id="d-del">Fshi numrin</button>
+        </div>
+      </div>`;
+  }
+  function metaHtml(r) {
+    const n = callsOf(r), last = n ? r.calls[n - 1] : null;
+    return `<div class="d-meta">${pill(r.status)}<span>${n ? n + '× thirrur · e fundit ' + when(last.t) : 'Nuk është thirrur ende'}</span></div>`
+      + (n >= 2 ? `<div class="warnbox" style="margin-top:8px">Kujdes: ky numër është thirrur ${n} herë.</div>` : '');
+  }
+  function statusButtons(r) {
+    return STATUSES.map((s, i) => `<button class="sbtn ${r.status === s.id ? 'on' : ''}" data-st="${s.id}" style="${r.status === s.id ? `border-color:var(--st-${s.id});background:var(--st-${s.id}-bg)` : ''}"><span class="sw" style="background:var(--st-${s.id})"></span>${s.name}<span class="k">${i + 1}</span></button>`).join('');
+  }
+  function histHtml(r) {
+    const c = (r.calls || []).slice().reverse();
+    return c.length ? c.map((x) => `<div><b style="font-weight:600">${stName(x.s)}</b><span>${when(x.t)}</span></div>`).join('') : '<span>Ende asnjë thirrje.</span>';
+  }
+
+  function setStatus(id, st) {
+    const r = recs.get(id); if (!r) return;
+    const now = Date.now();
+    Store.save({ ...r, status: st, calls: [...(r.calls || []), { s: st, t: now }], updated: now });
+    render(); toast(pretty(r.phone) + ': ' + stName(st));
+  }
+
+  const timers = new Map();
+  function saveField(id, k, v) {
+    const r = recs.get(id); if (!r) return;
+    recs.set(id, { ...r, [k]: v, updated: Date.now() });
+    $('#d-saved') && ($('#d-saved').textContent = 'Duke ruajtur…');
+    clearTimeout(timers.get(id));
+    timers.set(id, setTimeout(async () => {
+      await Store.save(recs.get(id));
+      if ($('#d-saved') && detailFor === id) $('#d-saved').textContent = '✓ U ruajt';
+      renderRows();
+    }, 600));
+  }
+
+  function select(id) {
+    selected = id; detailFor = null; render();
+    const row = document.querySelector(`.row[data-id="${id}"]`);
+    row?.scrollIntoView({ block: 'nearest' });
+  }
+  function nextCall() {
+    const r = sorted().sort((a, b) => (a.created || 0) - (b.created || 0)).find((x) => x.status === 'pa');
+    if (!r) { toast('Nuk ka më numra pa thirrur. Bravo!'); return; }
+    filter = 'all'; query = ''; $('#q').value = ''; select(r.id);
+  }
+
+  // ---------- Ngjarjet ----------
+  $('#filters').addEventListener('click', (e) => { const b = e.target.closest('[data-f]'); if (!b) return; filter = b.dataset.f; limit = 200; render(); });
+  $('#q').addEventListener('input', (e) => { query = e.target.value.trim().toLowerCase(); limit = 200; renderRows(); });
+  $('#sort').addEventListener('change', (e) => { sortBy = e.target.value; renderRows(); });
+  $('#rows').addEventListener('click', (e) => {
+    if (e.target.closest('[data-open-add]')) return openAdd();
+    if (e.target.id === 'more') { limit += 200; return renderRows(); }
+    const row = e.target.closest('.row'); if (row) select(row.dataset.id);
+  });
+  $('#quick').addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    const d = normalize(e.target.value);
+    if (!d) { toast('Numri nuk duket i saktë.'); return; }
+    const id = idFor(d);
+    if (recs.has(id)) { const r = recs.get(id); toast(`Ky numër ekziston: ${stName(r.status)}, ${callsOf(r)}× thirrur`); select(id); }
+    else { addNumbers([d]); select(id); toast('U shtua ' + pretty(d)); }
+    e.target.value = '';
+  });
+  $('#btn-next').addEventListener('click', nextCall);
+
+  const detail = $('#detail');
+  detail.addEventListener('click', async (e) => {
+    const r = selected && recs.get(selected); if (!r) return;
+    const st = e.target.closest('[data-st]'); if (st) return setStatus(r.id, st.dataset.st);
+    if (e.target.id === 'd-close') { selected = null; render(); return; }
+    if (e.target.id === 'd-copy') {
+      try { await navigator.clipboard.writeText(pretty(r.phone).replace(/\s/g, '')); toast('Numri u kopjua'); }
+      catch { toast('Zgjidhe numrin dhe shtyp Ctrl+C'); }
+      return;
+    }
+    if (e.target.id === 'd-undo') {
+      const calls = (r.calls || []).slice(0, -1);
+      Store.save({ ...r, calls, status: calls.length ? calls[calls.length - 1].s : 'pa', updated: Date.now() });
+      render(); toast('Statusi i fundit u anulua'); return;
+    }
+    if (e.target.id === 'd-del') {
+      $('#d-danger').innerHTML = `<span style="font-size:.88rem">Ta fshij ${pretty(r.phone)} me gjithë të dhënat?</span><span style="display:flex;gap:6px"><button class="btn small" id="d-no">Jo</button><button class="btn small" id="d-yes" style="background:var(--st-refuzoi);color:#fff">Po, fshije</button></span>`;
+      return;
+    }
+    if (e.target.id === 'd-no') { detailFor = null; renderDetail(); return; }
+    if (e.target.id === 'd-yes') { Store.remove(r.id); selected = null; render(); toast('Numri u fshi'); }
+  });
+  detail.addEventListener('input', (e) => { const k = e.target.dataset.k; if (k && selected) saveField(selected, k, e.target.value); });
+  detail.addEventListener('change', (e) => { const k = e.target.dataset.k; if (k && selected && e.target.tagName === 'SELECT') saveField(selected, k, e.target.value); });
+
+  document.addEventListener('keydown', (e) => {
+    if (!$('#add').hidden || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (document.activeElement?.matches('input,select,textarea')) { if (e.key === 'Escape') document.activeElement.blur(); return; }
+    if (/^[1-6]$/.test(e.key) && selected) { setStatus(selected, STATUSES[+e.key - 1].id); e.preventDefault(); }
+    else if (e.key.toLowerCase() === 'n') { nextCall(); e.preventDefault(); }
+    else if (e.key === 'Escape' && selected) { selected = null; render(); }
   });
 
-  renderChips(); renderCatalog(); renderCatSelect(); renderCount();
-  show(location.hash.slice(1));
-  window.addEventListener('resize', () => { if (!$('#view-porosite').hidden) renderMyOrders(); });
+  // ---------- Shto numra ----------
+  let sample = null, canImages = false, pending = [];
+  function openAdd() {
+    $('#add').hidden = false; pending = []; renderPreview();
+    $('#photo-off').hidden = canImages; $('#drop').hidden = !canImages;
+    switchTab(canImages ? 'photo' : 'text');
+  }
+  function closeAdd() { $('#add').hidden = true; abortCtl?.abort(); }
+  function switchTab(t) {
+    document.querySelectorAll('[data-tab]').forEach((b) => b.setAttribute('aria-selected', b.dataset.tab === t));
+    $('#tab-photo').hidden = t !== 'photo'; $('#tab-text').hidden = t !== 'text';
+    if (t === 'text') $('#paste').focus();
+  }
+  $('#btn-add').addEventListener('click', openAdd);
+  $('#add').addEventListener('click', (e) => {
+    if (e.target.id === 'add' || e.target.closest('[data-close]')) closeAdd();
+    const t = e.target.closest('[data-tab]'); if (t) switchTab(t.dataset.tab);
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('#add').hidden) closeAdd(); });
+
+  function setPending(rawList) {
+    const seen = new Set();
+    pending = rawList.map((raw) => {
+      const d = normalize(raw);
+      const item = { raw: String(raw), d, on: false, note: '', cls: '' };
+      if (!d) { item.note = 'Nuk duket numër i plotë, rregulloje'; item.cls = 'bad'; }
+      else if (seen.has(d)) { item.note = 'Përsëritet në këtë listë'; item.cls = 'dup'; }
+      else if (recs.has(idFor(d))) { const r = recs.get(idFor(d)); item.note = `Ekziston · ${stName(r.status)}${callsOf(r) ? ' · ' + callsOf(r) + '× thirrur' : ''}`; item.cls = 'dup'; }
+      else { item.on = true; item.note = 'I ri'; }
+      if (d) seen.add(d);
+      return item;
+    });
+    renderPreview();
+  }
+  function renderPreview() {
+    $('#preview-wrap').hidden = !pending.length;
+    $('#preview').innerHTML = pending.map((p, i) => `<div class="prow"><input type="checkbox" data-i="${i}" ${p.on ? 'checked' : ''} ${p.d ? '' : 'disabled'} aria-label="Përfshije"><input type="text" data-edit="${i}" value="${esc(p.d ? pretty(p.d) : p.raw)}" aria-label="Numri"><span class="note ${p.cls}">${esc(p.note)}</span></div>`).join('');
+    const n = pending.filter((p) => p.on).length, dup = pending.filter((p) => p.cls === 'dup').length;
+    $('#add-summary').textContent = pending.length ? `${n} të rinj${dup ? ` · ${dup} ekzistojnë ose përsëriten` : ''}` : '';
+    $('#btn-commit').disabled = !n;
+    $('#btn-commit').textContent = n ? `Shto ${n} numra në listë` : 'Shto në listë';
+  }
+  $('#preview').addEventListener('change', (e) => {
+    const i = e.target.dataset.i;
+    if (i != null) { pending[i].on = e.target.checked; renderPreview(); return; }
+    const j = e.target.dataset.edit;
+    if (j != null) { const raws = pending.map((p) => p.d ? pretty(p.d) : p.raw); raws[j] = e.target.value; setPending(raws); }
+  });
+  $('#btn-parse').addEventListener('click', () => {
+    const nums = extractNumbers($('#paste').value);
+    if (!nums.length) { toast('Nuk gjeta numra. Shkruaj një numër për rresht.'); return; }
+    setPending(nums);
+  });
+  $('#btn-commit').addEventListener('click', () => {
+    const list = pending.filter((p) => p.on && p.d).map((p) => p.d);
+    const n = addNumbers(list);
+    closeAdd(); $('#paste').value = ''; resetPhoto();
+    toast(`U shtuan ${n} numra`);
+    filter = 'pa'; render();
+  });
+
+  // Foto → Claude
+  let abortCtl = null;
+  function resetPhoto() { $('#photo-prev').hidden = true; $('#photo-ico').hidden = false; $('#photo-label').textContent = 'Bëj foto ose zgjidh foton e fletës'; $('#photo').value = ''; }
+  async function readPhoto(file) {
+    if (!file || !sample) return;
+    $('#photo-prev').src = URL.createObjectURL(file); $('#photo-prev').hidden = false; $('#photo-ico').hidden = true;
+    $('#photo-label').textContent = 'Zgjidh një foto tjetër';
+    $('#photo-status').hidden = false; pending = []; renderPreview();
+    abortCtl?.abort(); abortCtl = new AbortController();
+    try {
+      const out = await sample.json(
+        'This photo shows a sheet (often handwritten, in a notebook) with phone numbers from Kosovo, given to a call-center agent. ' +
+        'Read EVERY phone number on the sheet, top to bottom, exactly as written. Kosovo mobile numbers usually look like 044 123 456, 045…, 049…, 043…, 048…, or +383 44 123 456. ' +
+        'Ignore crossed-out numbers, dates, prices and other text. If a digit is unclear, give your best reading. ' +
+        'Reply with only a JSON array of strings, one per number, e.g. ["044 123 456", "049 555 222"]. If there are no phone numbers, reply [].',
+        { images: [file], signal: abortCtl.signal },
+      );
+      const list = Array.isArray(out) ? out.map(String).filter((s) => s.trim()) : [];
+      if (!list.length) toast('Nuk gjeta numra në foto. Provo një foto më të qartë.');
+      else { setPending(list); toast(`U lexuan ${list.length} numra. Kontrolloji.`); }
+    } catch (e) {
+      if (e?.code === 'cancelled') return;
+      const msg = {
+        not_granted: 'Leximi i fotos kërkon leje. Mund t\'i ngjitësh numrat me dorë.',
+        rate_limited: 'Shumë kërkesa njëherësh. Provo prapë pas pak.',
+        image_rejected: 'Kjo foto nuk mund të lexohet. Provo JPG ose PNG.',
+        invalid_json: 'Nuk i lexova dot numrat. Provo një foto më të qartë.',
+        session_expired: 'Hyr përsëri në Claude dhe provo prapë.',
+      }[e?.code] || 'Leximi dështoi. Provo prapë.';
+      toast(msg);
+      if (['not_granted', 'sampling_disabled', 'images_unavailable'].includes(e?.code)) { canImages = false; $('#drop').hidden = true; $('#photo-off').hidden = false; }
+    } finally { $('#photo-status').hidden = true; }
+  }
+  $('#photo').addEventListener('change', (e) => readPhoto(e.target.files[0]));
+  const drop = $('#drop');
+  drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('over'); });
+  drop.addEventListener('dragleave', () => drop.classList.remove('over'));
+  drop.addEventListener('drop', (e) => { e.preventDefault(); drop.classList.remove('over'); readPhoto(e.dataTransfer.files[0]); });
+
+  // ---------- Eksporti ----------
+  let downloads = null;
+  $('#btn-export').addEventListener('click', async () => {
+    if (!recs.size) { toast('Lista është bosh.'); return; }
+    const head = ['Numri', 'Statusi', 'Herë thirrur', 'Thirrja e fundit', 'Emri', 'Mbiemri', 'Komuna', 'Vendi', 'Marka', 'Modeli', 'Viti', 'Ngjyra', 'Data e veturës', 'Shënime'];
+    const cell = (v) => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+    const lines = sorted().map((r) => { const n = callsOf(r); return [pretty(r.phone), stName(r.status), n, n ? when(r.calls[n - 1].t) : '', r.emri, r.mbiemri, r.komuna, r.vendi, r.marka, r.modeli, r.viti, r.ngjyra, r.data, r.shenime].map(cell).join(';'); });
+    const csv = '﻿' + head.map(cell).join(';') + '\r\n' + lines.join('\r\n');
+    const d = new Date(), filename = `thirrjet-${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}.csv`;
+    if (downloads) {
+      try { await downloads.save({ filename, data: new Blob([csv], { type: 'text/csv' }) }); } catch (e) { if (e?.code !== 'declined') toast('Shkarkimi nuk u krye.'); }
+      return;
+    }
+    if (window.claude) { toast('Shkarkimi nuk është i mundur këtu.'); return; }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = filename; a.click();
+  });
+
+  // ---------- Nisja ----------
+  render();
+  Store.init();
+  (async () => {
+    const use = window.claude?.use?.bind(window.claude);
+    if (!use) return;
+    try { downloads = await use('downloads'); } catch {}
+    try {
+      sample = await use('sample');
+      const lim = sample ? await sample.limits().catch(() => null) : null;
+      canImages = !!lim?.images;
+    } catch {}
+  })();
 })();
 </script>
 </body>

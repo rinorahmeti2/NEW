@@ -1,19 +1,17 @@
-# Në Vendlindje
+# Lista e Thirrjeve
 
-Demo e një platforme për mërgatën: klientët jashtë vendit porosisin punë për shtëpinë
-dhe prindërit në Kosovë (pastrim, riparime, blerje ushqimesh, fatura, aeroport etj.),
-dhe e shohin punën e kryer me foto para dhe pas.
+Mjet për punën në qendrën e thirrjeve: numrat që jep firma futen në listë, çdo thirrje
+shënohet me status, dhe të dhënat e klientit e të veturës ruhen pa fletore.
 
-Hape `index.html` në shfletues. Nuk ka nevojë për instalim.
+## Si përdoret
+1. **Shto numra:** ngjit numrat, ose (kur hapet brenda Claude) bëj foto fletës dhe Claude i lexon.
+   Numrat që ekzistojnë njihen dhe nuk shtohen dy herë.
+2. **Thirrja e radhës** (ose tasti `N`) hap numrin e parë që s'është thirrur.
+3. Pas thirrjes zgjidh statusin (tastet `1–6`): Kam biseduar, Në pritje, Për ofertë,
+   Nuk e hapi, Refuzoi, Marrëveshje e lidhur.
+4. Plotëso emrin, mbiemrin, komunën, vendin, markën, modelin, vitin, ngjyrën dhe datën e veturës.
+   Ruhen automatikisht.
+5. **Shkarko Excel** nxjerr gjithë listën si CSV.
 
-## Çfarë ka
-- **Shërbimet:** 31 shërbime në 8 kategori, me kërkim, filtra dhe porosi me shumë shërbime njëherësh.
-- **Porositë e mia:** statusi (E re → E pranuar → Në punë → Përfunduar) dhe fotot para dhe pas.
-- **Paneli i pronarit:** ndryshon statusin, cakton punëtorin, ngarkon fotot dhe **shton shërbime ose kategori të reja**.
-
-Të dhënat ruhen në shfletues (localStorage). Për përdorim të vërtetë duhet një server
-me databazë, llogari për përdoruesit dhe pagesa online.
-
-## Shërbime të reja në kod
-Shërbimet bazë janë te lista `BASE_SERVICES` në `index.html`. Çdo rresht:
-`['kategoria', 'Emri', çmimi, 'njësia', 'Përshkrimi', 'Etiketa opsionale']`.
+Kur hapet si skedar (`index.html`) në kompjuter, të dhënat ruhen në atë shfletues
+dhe leximi i fotos nuk punon.
