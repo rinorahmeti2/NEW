@@ -141,6 +141,10 @@ h1, h2, h3 { margin: 0; line-height: 1.2; text-wrap: balance; }
 .f label { font-size: .78rem; font-weight: 600; color: var(--muted); }
 .f input, .f select, .f textarea { border: 1px solid var(--border); background: var(--bg); border-radius: 8px; padding: 8px 10px; width: 100%; min-width: 0; }
 .saved { font-size: .75rem; color: var(--muted); font-weight: 500; text-transform: none; letter-spacing: 0; }
+.counter { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.counter .big { font-size: 1.6rem; font-weight: 800; font-variant-numeric: tabular-nums; min-width: 2ch; text-align: center; }
+.counter .minus { width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--border); background: var(--panel); font-size: 1.2rem; font-weight: 700; }
+.counter .minus:disabled { opacity: .4; cursor: default; }
 .hist { display: grid; gap: 4px; font-size: .86rem; }
 .hist div { display: flex; justify-content: space-between; gap: 8px; }
 .hist span { color: var(--muted); font-variant-numeric: tabular-nums; }
@@ -386,7 +390,7 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
     list.forEach((d, i) => {
       const id = idFor(d);
       if (recs.has(id)) return;
-      Store.save({ id, phone: d, status: 'pa', calls: [], created: now + i, updated: now + i });
+      Store.save({ id, v: 2, phone: d, status: 'pa', calls: [], hist: [], created: now + i, updated: now + i });
       n++;
     });
     render();
@@ -396,7 +400,14 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
   // ---------- Gjendja e pamjes ----------
   let filter = 'all', query = '', sortBy = 'created', selected = null, limit = 200;
 
-  function callsOf(r) { return (r.calls || []).length; }
+  function callLog(r) {
+    if (r.v === 2) return r.calls || [];
+    const old = r.calls || [];
+    return old.length ? [{ t: old[old.length - 1].t }] : [];
+  }
+  function histOf(r) { return r.v === 2 ? (r.hist || []) : (r.calls || []).map((c) => ({ s: c.s, t: c.t })); }
+  function upgraded(r) { return r.v === 2 ? r : { ...r, v: 2, calls: callLog(r), hist: histOf(r) }; }
+  function callsOf(r) { return callLog(r).length; }
   function matches(r) {
     if (filter !== 'all' && r.status !== filter) return false;
     if (!query) return true;
@@ -419,7 +430,11 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
   function renderStats() {
     const all = [...recs.values()], today = dayKey(Date.now());
     let callsToday = 0, dealsToday = 0;
-    all.forEach((r) => (r.calls || []).forEach((c) => { if (dayKey(c.t) === today) { callsToday++; if (c.s === 'marreveshje') dealsToday++; } }));
+    all.forEach((r) => {
+      callLog(r).forEach((c) => { if (dayKey(c.t) === today) callsToday++; });
+      const h = histOf(r), last = h[h.length - 1];
+      if (r.status === 'marreveshje' && last && dayKey(last.t) === today) dealsToday++;
+    });
     const cnt = (s) => all.filter((r) => r.status === s).length;
     $('#stats').innerHTML = [
       [callsToday, 'Thirrje sot'],
@@ -468,12 +483,12 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
     el.classList.toggle('idle', !r);
     if (!r) {
       detailFor = null;
-      el.innerHTML = `<div class="d-empty"><h3 style="color:var(--text);margin-bottom:6px">Zgjidh një numër</h3>Kliko një numër nga lista, ose <b>Thirrja e radhës</b> për numrin e parë që s'është thirrur.<br><br>Shkurtesat: tastet <b>1–6</b> zgjedhin statusin, <b>N</b> hap numrin e radhës.</div>`;
+      el.innerHTML = `<div class="d-empty"><h3 style="color:var(--text);margin-bottom:6px">Zgjidh një numër</h3>Kliko një numër nga lista, ose <b>Thirrja e radhës</b> për numrin e parë që s'është thirrur.<br><br>Shkurtesat: <b>T</b> shënon një thirrje, <b>1–6</b> zgjedhin statusin, <b>N</b> hap numrin e radhës.</div>`;
       return;
     }
     // Mos e rivizato formularin ndërsa ajo shkruan; rifresko vetëm pjesët e tjera.
     if (detailFor === r.id && el.contains(document.activeElement) && document.activeElement.matches('input,select,textarea')) {
-      $('#d-status', el).innerHTML = statusButtons(r); $('#d-hist', el).innerHTML = histHtml(r); $('#d-meta', el).innerHTML = metaHtml(r);
+      $('#d-status', el).innerHTML = statusButtons(r); $('#d-hist', el).innerHTML = histHtml(r); $('#d-meta', el).innerHTML = metaHtml(r); $('#d-counter', el).innerHTML = counterHtml(r);
       return;
     }
     detailFor = r.id;
@@ -483,7 +498,8 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
         <div class="d-num"><button class="btn small d-close" id="d-close">← Lista</button><h2>${pretty(r.phone)}</h2><button class="btn small" id="d-copy">Kopjo</button></div>
         <div id="d-meta">${metaHtml(r)}</div>
       </div>
-      <div class="d-sec"><h3>Si shkoi thirrja?</h3><div class="status-grid" id="d-status">${statusButtons(r)}</div></div>
+      <div class="d-sec"><h3>Sa herë e ke thirrur</h3><div id="d-counter">${counterHtml(r)}</div></div>
+      <div class="d-sec"><h3>Statusi</h3><div class="status-grid" id="d-status">${statusButtons(r)}</div></div>
       <div class="d-sec"><h3>Klienti <span class="saved" id="d-saved"></span></h3>
         <div class="form" id="d-form">
           <div class="f"><label for="f-emri">Emri</label><input id="f-emri" data-k="emri" value="${esc(r.emri)}" autocomplete="off"></div>
@@ -504,29 +520,42 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
       </div>
       <div class="d-sec"><h3>Historia e thirrjeve</h3><div class="hist" id="d-hist">${histHtml(r)}</div>
         <div style="margin-top:14px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap" id="d-danger">
-          <button class="link" id="d-undo" ${callsOf(r) ? '' : 'hidden'}>Anulo statusin e fundit</button>
+          <button class="link" id="d-undo" ${histOf(r).length ? '' : 'hidden'}>Anulo statusin e fundit</button>
           <button class="link danger" id="d-del">Fshi numrin</button>
         </div>
       </div>`;
   }
   function metaHtml(r) {
-    const n = callsOf(r), last = n ? r.calls[n - 1] : null;
+    const log = callLog(r), n = log.length, last = n ? log[n - 1] : null;
     return `<div class="d-meta">${pill(r.status)}<span>${n ? n + '× thirrur · e fundit ' + when(last.t) : 'Nuk është thirrur ende'}</span></div>`
       + (n >= 2 ? `<div class="warnbox" style="margin-top:8px">Kujdes: ky numër është thirrur ${n} herë.</div>` : '');
+  }
+  function counterHtml(r) {
+    const n = callsOf(r);
+    return `<div class="counter"><button class="minus" id="d-minus" ${n ? '' : 'disabled'} aria-label="Hiq një thirrje">−</button><span class="big">${n}</span><button class="btn primary" id="d-plus">+ E thirra tani <span class="k" style="border-color:currentColor;opacity:.8;border:1px solid;border-radius:4px;padding:0 5px;font-size:.7rem">T</span></button></div>`;
   }
   function statusButtons(r) {
     return STATUSES.map((s, i) => `<button class="sbtn ${r.status === s.id ? 'on' : ''}" data-st="${s.id}" style="${r.status === s.id ? `border-color:var(--st-${s.id});background:var(--st-${s.id}-bg)` : ''}"><span class="sw" style="background:var(--st-${s.id})"></span>${s.name}<span class="k">${i + 1}</span></button>`).join('');
   }
   function histHtml(r) {
-    const c = (r.calls || []).slice().reverse();
-    return c.length ? c.map((x) => `<div><b style="font-weight:600">${stName(x.s)}</b><span>${when(x.t)}</span></div>`).join('') : '<span>Ende asnjë thirrje.</span>';
+    const c = [...callLog(r).map((x) => ({ t: x.t, label: 'Thirrje' })), ...histOf(r).map((x) => ({ t: x.t, label: 'Statusi: ' + stName(x.s) }))].sort((a, b) => b.t - a.t);
+    return c.length ? c.map((x) => `<div><b style="font-weight:600">${x.label}</b><span>${when(x.t)}</span></div>`).join('') : '<span>Ende asgjë.</span>';
   }
 
   function setStatus(id, st) {
     const r = recs.get(id); if (!r) return;
     const now = Date.now();
-    Store.save({ ...r, status: st, calls: [...(r.calls || []), { s: st, t: now }], updated: now });
+    if (r.status === st) return;
+    const u = upgraded(r);
+    Store.save({ ...u, status: st, hist: [...u.hist, { s: st, t: now }], updated: now });
     render(); toast(pretty(r.phone) + ': ' + stName(st));
+  }
+  function addCall(id, delta) {
+    const r = recs.get(id); if (!r) return;
+    const u = upgraded(r);
+    const calls = delta > 0 ? [...u.calls, { t: Date.now() }] : u.calls.slice(0, -1);
+    Store.save({ ...u, calls, updated: Date.now() });
+    render(); toast(delta > 0 ? `Thirrja u shënua (${calls.length}×)` : `U hoq një thirrje (${calls.length}×)`);
   }
 
   const timers = new Map();
@@ -578,14 +607,16 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
     const r = selected && recs.get(selected); if (!r) return;
     const st = e.target.closest('[data-st]'); if (st) return setStatus(r.id, st.dataset.st);
     if (e.target.id === 'd-close') { selected = null; render(); return; }
+    if (e.target.closest('#d-plus')) return addCall(r.id, 1);
+    if (e.target.id === 'd-minus') return addCall(r.id, -1);
     if (e.target.id === 'd-copy') {
       try { await navigator.clipboard.writeText(pretty(r.phone).replace(/\s/g, '')); toast('Numri u kopjua'); }
       catch { toast('Zgjidhe numrin dhe shtyp Ctrl+C'); }
       return;
     }
     if (e.target.id === 'd-undo') {
-      const calls = (r.calls || []).slice(0, -1);
-      Store.save({ ...r, calls, status: calls.length ? calls[calls.length - 1].s : 'pa', updated: Date.now() });
+      const u = upgraded(r), hist = u.hist.slice(0, -1);
+      Store.save({ ...u, hist, status: hist.length ? hist[hist.length - 1].s : 'pa', updated: Date.now() });
       render(); toast('Statusi i fundit u anulua'); return;
     }
     if (e.target.id === 'd-del') {
@@ -603,6 +634,7 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
     if (document.activeElement?.matches('input,select,textarea')) { if (e.key === 'Escape') document.activeElement.blur(); return; }
     if (/^[1-6]$/.test(e.key) && selected) { setStatus(selected, STATUSES[+e.key - 1].id); e.preventDefault(); }
     else if (e.key.toLowerCase() === 'n') { nextCall(); e.preventDefault(); }
+    else if (e.key.toLowerCase() === 't' && selected) { addCall(selected, 1); e.preventDefault(); }
     else if (e.key === 'Escape' && selected) { selected = null; render(); }
   });
 
@@ -712,7 +744,7 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
     if (!recs.size) { toast('Lista është bosh.'); return; }
     const head = ['Numri', 'Statusi', 'Herë thirrur', 'Thirrja e fundit', 'Emri', 'Mbiemri', 'Komuna', 'Vendi', 'Marka', 'Modeli', 'Viti', 'Ngjyra', 'Data e veturës', 'Shënime'];
     const cell = (v) => '"' + String(v ?? '').replace(/"/g, '""') + '"';
-    const lines = sorted().map((r) => { const n = callsOf(r); return [pretty(r.phone), stName(r.status), n, n ? when(r.calls[n - 1].t) : '', r.emri, r.mbiemri, r.komuna, r.vendi, r.marka, r.modeli, r.viti, r.ngjyra, r.data, r.shenime].map(cell).join(';'); });
+    const lines = sorted().map((r) => { const log = callLog(r), n = log.length; return [pretty(r.phone), stName(r.status), n, n ? when(log[n - 1].t) : '', r.emri, r.mbiemri, r.komuna, r.vendi, r.marka, r.modeli, r.viti, r.ngjyra, r.data, r.shenime].map(cell).join(';'); });
     const csv = '﻿' + head.map(cell).join(';') + '\r\n' + lines.join('\r\n');
     const d = new Date(), filename = `thirrjet-${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}.csv`;
     if (downloads) {

@@ -7,7 +7,8 @@ shënohet me status, dhe të dhënat e klientit e të veturës ruhen pa fletore.
 1. **Shto numra:** ngjit numrat, ose (kur hapet brenda Claude) bëj foto fletës dhe Claude i lexon.
    Numrat që ekzistojnë njihen dhe nuk shtohen dy herë.
 2. **Thirrja e radhës** (ose tasti `N`) hap numrin e parë që s'është thirrur.
-3. Pas thirrjes zgjidh statusin (tastet `1–6`): Kam biseduar, Në pritje, Për ofertë,
+3. Pas thirrjes shtyp **+ E thirra tani** (tasti `T`) për ta numëruar thirrjen,
+   dhe zgjidh statusin (tastet `1–6`). Ndryshimi i statusit nuk e rrit numrin e thirrjeve: Kam biseduar, Në pritje, Për ofertë,
    Nuk e hapi, Refuzoi, Marrëveshje e lidhur.
 4. Plotëso emrin, mbiemrin, komunën, vendin, markën, modelin, vitin, ngjyrën dhe datën e veturës.
    Ruhen automatikisht.
