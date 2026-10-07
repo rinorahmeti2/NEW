@@ -23,3 +23,9 @@ dhe leximi i fotos nuk punon.
 - Kur zgjidhet "Marrëveshje e lidhur", data e bisedës dhe fillimi i kontratës plotësohen me datën e sotme.
 - Kur hapet faqja, një njoftim lart tregon kontratat që skadojnë brenda 30 ditëve ose kanë skaduar.
   **Rinovo për 1 vit** e zgjat kontratën.
+
+## Marrëveshjet dhe historia ditore
+- Kutitë lart janë të klikueshme. **Marrëveshje gjithsej** hap tabelën e të gjitha
+  marrëveshjeve, me numrin, klientin, komunën, veturën, pakon, datat e kontratës dhe gjendjen.
+- **Thirrje sot**, **Marrëveshje sot** dhe butoni **Historia ditore** hapin historinë për çdo
+  ditë: sa thirrje, sa marrëveshje dhe cilët numra janë thirrur.

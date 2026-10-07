@@ -85,7 +85,31 @@ h1, h2, h3 { margin: 0; line-height: 1.2; text-wrap: balance; }
 
 /* Stats */
 .stats { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 16px; }
-.stat { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
+.stat { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; text-align: left; display: block; width: 100%; position: relative; }
+.stat:hover { border-color: var(--accent); }
+.stat::after { content: "›"; position: absolute; right: 12px; top: 10px; color: var(--muted); font-size: 1.2rem; line-height: 1; }
+.sheet.wide { width: min(1100px, 100%); }
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 10px; }
+table.tbl { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.tbl th { text-align: left; font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700; padding: 9px 10px; border-bottom: 1px solid var(--border); background: var(--panel-2); white-space: nowrap; }
+.tbl td { padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.tbl tr:last-child td { border-bottom: 0; }
+.tbl tbody tr { cursor: pointer; }
+.tbl tbody tr:hover td { background: var(--bg); }
+.tbl .ph { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tbl .nw { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sum { display: flex; gap: 8px; flex-wrap: wrap; }
+.sum div { background: var(--panel-2); border-radius: 10px; padding: 8px 12px; }
+.sum b { display: block; font-size: 1.25rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.sum span { font-size: .78rem; color: var(--muted); }
+.hgrid { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 14px; align-items: start; }
+.days { display: grid; gap: 4px; max-height: 60vh; overflow-y: auto; }
+.day { border: 1px solid var(--border); background: var(--panel); border-radius: 10px; padding: 8px 10px; text-align: left; display: grid; gap: 1px; }
+.day b { font-size: .92rem; }
+.day span { font-size: .8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.day.on { border: 2px solid var(--accent); background: var(--accent-soft); padding: 7px 9px; }
+.hday { display: grid; gap: 12px; min-width: 0; }
+@media (max-width: 700px) { .hgrid { grid-template-columns: 1fr; } .days { max-height: 180px; grid-auto-flow: column; grid-auto-columns: 150px; overflow-x: auto; overflow-y: hidden; } }
 .stat b { display: block; font-size: 1.55rem; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
 .stat span { font-size: .8rem; color: var(--muted); }
 .stat.hl b { color: var(--st-marreveshje); }
@@ -224,6 +248,7 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
     </div>
     <div class="top-actions">
       <button class="btn" id="btn-next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>Thirrja e radhës</button>
+      <button class="btn" id="btn-history">Historia ditore</button>
       <button class="btn" id="btn-export">Shkarko Excel</button>
       <button class="btn primary" id="btn-add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Shto numra</button>
     </div>
@@ -290,6 +315,33 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
     <div class="sheet-foot">
       <span class="hint" id="add-summary"></span>
       <button class="btn primary" id="btn-commit" disabled>Shto në listë</button>
+    </div>
+  </div>
+</div>
+
+<!-- Marrëveshjet -->
+<div class="modal" id="deals" hidden>
+  <div class="sheet wide" role="dialog" aria-modal="true" aria-labelledby="deals-title">
+    <div class="sheet-head"><h2 id="deals-title">Marrëveshjet</h2><button class="x" data-close-panel aria-label="Mbyll">✕</button></div>
+    <div class="sum" id="deals-sum"></div>
+    <div class="toolbar" style="padding:0;border:0">
+      <label class="field-inline" for="deals-q">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="deals-q" type="search" placeholder="Kërko emrin, numrin, pakon…" autocomplete="off">
+      </label>
+    </div>
+    <div class="filters" id="deals-f" style="padding:0;border:0;flex-wrap:wrap"></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Numri</th><th>Klienti</th><th>Komuna</th><th>Vetura</th><th>Pako</th><th>Biseda</th><th>Kontrata</th><th>Gjendja</th></tr></thead><tbody id="deals-body"></tbody></table></div>
+  </div>
+</div>
+
+<!-- Historia ditore -->
+<div class="modal" id="history" hidden>
+  <div class="sheet wide" role="dialog" aria-modal="true" aria-labelledby="history-title">
+    <div class="sheet-head"><h2 id="history-title">Historia ditore</h2><button class="x" data-close-panel aria-label="Mbyll">✕</button></div>
+    <div class="hgrid">
+      <div class="days" id="days"></div>
+      <div class="hday" id="hday"></div>
     </div>
   </div>
 </div>
@@ -452,6 +504,7 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
   function callsOf(r) { return callLog(r).length; }
   function matches(r) {
     if (filter === 'skadon') { if (!expiringSoon(r)) return false; }
+    else if (filter === 'rithirr') { if (r.status !== 'pritje' && r.status !== 'oferte') return false; }
     else if (filter !== 'all' && r.status !== filter) return false;
     if (!query) return true;
     const hay = [pretty(r.phone), r.phone, r.emri, r.mbiemri, r.vendi, r.komuna, r.marka, r.modeli, r.ngjyra, r.shenime, pakoOf(r.pako)?.name].join(' ').toLowerCase();
@@ -467,27 +520,123 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
     $('#mode').textContent = Store.mode === 'db'
       ? 'Ruhet automatikisht në llogarinë tënde · ' + recs.size + ' numra'
       : Store.mode === 'local' ? 'Ruhet në këtë kompjuter · ' + recs.size + ' numra' : 'Duke u ngarkuar…';
-    renderAlerts(); renderStats(); renderFilters(); renderRows(); renderDetail();
+    renderAlerts(); renderStats(); renderFilters(); renderRows(); renderDetail(); renderDeals(); renderHistory();
   }
 
   function renderStats() {
     const all = [...recs.values()], today = dayKey(Date.now());
-    let callsToday = 0, dealsToday = 0;
-    all.forEach((r) => {
-      callLog(r).forEach((c) => { if (dayKey(c.t) === today) callsToday++; });
-      const h = histOf(r), last = h[h.length - 1];
-      if (r.status === 'marreveshje' && last && dayKey(last.t) === today) dealsToday++;
-    });
+    const day = dayData()[today] || { calls: 0, deals: new Set() };
+    const callsToday = day.calls, dealsToday = day.deals.size;
     const cnt = (s) => all.filter((r) => r.status === s).length;
     $('#stats').innerHTML = [
-      [callsToday, 'Thirrje sot'],
-      [dealsToday, 'Marrëveshje sot', 'hl'],
-      [cnt('pa'), 'Pa thirrur ende'],
-      [cnt('pritje') + cnt('oferte'), 'Për t\'i rithirrur'],
-      [cnt('marreveshje'), 'Marrëveshje gjithsej', 'hl'],
-      [all.filter(expiringSoon).length, 'Skadojnë ≤ 30 ditë'],
-    ].map(([v, l, c]) => `<div class="stat ${c || ''}"><b>${v}</b><span>${l}</span></div>`).join('');
+      [callsToday, 'Thirrje sot', '', 'history'],
+      [dealsToday, 'Marrëveshje sot', 'hl', 'history'],
+      [cnt('pa'), 'Pa thirrur ende', '', 'f:pa'],
+      [cnt('pritje') + cnt('oferte'), 'Për t\'i rithirrur', '', 'f:rithirr'],
+      [cnt('marreveshje'), 'Marrëveshje gjithsej', 'hl', 'deals'],
+      [all.filter(expiringSoon).length, 'Skadojnë ≤ 30 ditë', '', 'f:skadon'],
+    ].map(([v, l, c, act]) => `<button class="stat ${c || ''}" data-act="${act}"><b>${v}</b><span>${l}</span></button>`).join('');
   }
+
+  // Ngjarjet e çdo dite: thirrjet dhe statuset, sipas datës.
+  function dayData() {
+    const days = {};
+    const get = (t) => { const k = dayKey(t); return days[k] || (days[k] = { key: k, t, calls: 0, deals: new Set(), touched: new Map() }); };
+    const touch = (d, id) => { let x = d.touched.get(id); if (!x) { x = { calls: 0, st: [] }; d.touched.set(id, x); } return x; };
+    recs.forEach((r) => {
+      callLog(r).forEach((c) => { const d = get(c.t); d.calls++; touch(d, r.id).calls++; });
+      histOf(r).forEach((h) => { const d = get(h.t); touch(d, r.id).st.push(h.s); if (h.s === 'marreveshje') d.deals.add(r.id); });
+    });
+    return days;
+  }
+  const DITET = ['E diel', 'E hënë', 'E martë', 'E mërkurë', 'E enjte', 'E premte', 'E shtunë'];
+  function dayLabel(t) {
+    const d = new Date(t), k = dayKey(t);
+    const date = d.getDate() + ' ' + MUAJT[d.getMonth()];
+    if (k === dayKey(Date.now())) return 'Sot, ' + date;
+    if (k === dayKey(Date.now() - 864e5)) return 'Dje, ' + date;
+    return DITET[d.getDay()] + ', ' + date;
+  }
+
+  $('#stats').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-act]'); if (!b) return;
+    const a = b.dataset.act;
+    if (a === 'deals') openDeals();
+    else if (a === 'history') openHistory(dayKey(Date.now()));
+    else { filter = a.slice(2); limit = 200; render(); $('#rows').scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+  });
+
+  // ---------- Paneli: Marrëveshjet ----------
+  let dealsFilter = 'all', dealsQuery = '';
+  function dealState(r) {
+    const n = daysLeft(r);
+    if (n === null) return { k: 'pa-date', text: 'Pa datë kontrate', st: 'pa' };
+    if (n < 0) return { k: 'skaduar', text: leftText(n), st: 'refuzoi' };
+    if (n <= 30) return { k: 'skadon', text: leftText(n), st: 'pritje' };
+    return { k: 'aktive', text: `Aktive · edhe ${n} ditë`, st: 'marreveshje' };
+  }
+  function openDeals() { $('#deals').hidden = false; renderDeals(); }
+  function renderDeals() {
+    if ($('#deals').hidden) return;
+    const all = [...recs.values()].filter((r) => r.status === 'marreveshje');
+    const cnt = (k) => all.filter((r) => dealState(r).k === k).length;
+    const value = all.reduce((a, r) => a + (pakoOf(r.pako)?.price || 0), 0);
+    $('#deals-sum').innerHTML = [[all.length, 'Marrëveshje'], [value + ' €', 'Vlera e pakove'], [cnt('aktive'), 'Aktive'], [cnt('skadon'), 'Skadojnë ≤ 30 ditë'], [cnt('skaduar'), 'Të skaduara']]
+      .map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join('');
+    const fs = [['all', 'Të gjitha', all.length], ['aktive', 'Aktive', cnt('aktive')], ['skadon', 'Skadojnë', cnt('skadon')], ['skaduar', 'Të skaduara', cnt('skaduar')], ...PAKOT.map((p) => ['p:' + p.id, p.name, all.filter((r) => r.pako === p.id).length])];
+    $('#deals-f').innerHTML = fs.map(([k, n, c]) => `<button class="chip" data-df="${k}" aria-pressed="${dealsFilter === k}">${n}<span class="c">${c}</span></button>`).join('');
+    const list = all.filter((r) => {
+      if (dealsFilter.startsWith('p:')) { if (r.pako !== dealsFilter.slice(2)) return false; }
+      else if (dealsFilter !== 'all' && dealState(r).k !== dealsFilter) return false;
+      if (!dealsQuery) return true;
+      return [pretty(r.phone), r.phone, r.emri, r.mbiemri, r.komuna, r.vendi, r.marka, r.modeli, pakoOf(r.pako)?.name].join(' ').toLowerCase().includes(dealsQuery);
+    }).sort((a, b) => (b.kontrataFillon || b.dataBisedes || '').localeCompare(a.kontrataFillon || a.dataBisedes || ''));
+    $('#deals-body').innerHTML = list.length ? list.map((r) => {
+      const ds = dealState(r), p = pakoOf(r.pako), e = expiryOf(r);
+      return `<tr data-id="${r.id}">
+        <td class="ph">${pretty(r.phone)}</td>
+        <td>${esc([r.emri, r.mbiemri].filter(Boolean).join(' ')) || '—'}</td>
+        <td>${esc([r.komuna, r.vendi].filter(Boolean).join(', ')) || '—'}</td>
+        <td>${esc([r.marka, r.modeli, r.viti, r.ngjyra].filter(Boolean).join(' · ')) || '—'}</td>
+        <td class="nw">${p ? `<b>${esc(p.name)}</b> · ${p.price} €` : '<span style="color:var(--st-pritje);font-weight:600">Pa pako</span>'}</td>
+        <td class="nw">${fmtD(r.dataBisedes) || '—'}</td>
+        <td class="nw">${r.kontrataFillon ? fmtD(r.kontrataFillon) + ' – ' + fmtD(e) : '—'}</td>
+        <td><span class="pill" style="color:var(--st-${ds.st});background:var(--st-${ds.st}-bg)">${ds.text}</span></td>
+      </tr>`;
+    }).join('') : `<tr><td colspan="8" class="hint" style="padding:24px;text-align:center;cursor:default">${all.length ? 'Asnjë marrëveshje nuk përputhet.' : 'Ende asnjë marrëveshje. Kur zgjedh “Marrëveshje e lidhur” te një numër, del këtu.'}</td></tr>`;
+  }
+  $('#deals-f').addEventListener('click', (e) => { const b = e.target.closest('[data-df]'); if (b) { dealsFilter = b.dataset.df; renderDeals(); } });
+  $('#deals-q').addEventListener('input', (e) => { dealsQuery = e.target.value.trim().toLowerCase(); renderDeals(); });
+  $('#deals-body').addEventListener('click', (e) => { const tr = e.target.closest('tr[data-id]'); if (tr) { closePanels(); select(tr.dataset.id); } });
+
+  // ---------- Paneli: Historia ditore ----------
+  let histDay = null;
+  function openHistory(k) { histDay = k; $('#history').hidden = false; renderHistory(); }
+  function renderHistory() {
+    if ($('#history').hidden) return;
+    const days = dayData(), today = dayKey(Date.now());
+    if (!days[today]) days[today] = { key: today, t: Date.now(), calls: 0, deals: new Set(), touched: new Map() };
+    const list = Object.values(days).sort((a, b) => b.t - a.t);
+    if (!days[histDay]) histDay = today;
+    $('#days').innerHTML = list.map((d) => `<button class="day ${d.key === histDay ? 'on' : ''}" data-day="${d.key}"><b>${dayLabel(d.t)}</b><span>${d.calls} thirrje · ${d.deals.size} marrëveshje</span></button>`).join('');
+    const d = days[histDay];
+    const value = [...d.deals].reduce((a, id) => a + (pakoOf(recs.get(id)?.pako)?.price || 0), 0);
+    const rows = [...d.touched.entries()].map(([id, x]) => ({ r: recs.get(id), ...x })).filter((x) => x.r)
+      .sort((a, b) => (b.st.includes('marreveshje') - a.st.includes('marreveshje')) || (b.calls - a.calls));
+    $('#hday').innerHTML = `
+      <h3 style="font-size:1.1rem">${dayLabel(d.t)}</h3>
+      <div class="sum"><div><b>${d.calls}</b><span>Thirrje</span></div><div><b>${d.touched.size}</b><span>Numra të ndryshëm</span></div><div><b style="color:var(--st-marreveshje)">${d.deals.size}</b><span>Marrëveshje</span></div><div><b>${value} €</b><span>Vlera e pakove</span></div></div>
+      <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Numri</th><th>Klienti</th><th>Thirrje</th><th>Statuset atë ditë</th><th>Pako</th></tr></thead><tbody>
+      ${rows.length ? rows.map((x) => `<tr data-id="${x.r.id}"><td class="ph">${pretty(x.r.phone)}</td><td>${esc([x.r.emri, x.r.mbiemri].filter(Boolean).join(' ')) || '—'}</td><td class="nw">${x.calls || '—'}</td><td>${x.st.length ? x.st.map((s) => pill(s)).join(' ') : '<span class="hint">Vetëm thirrje</span>'}</td><td class="nw">${esc(pakoOf(x.r.pako)?.name || '—')}</td></tr>`).join('')
+        : '<tr><td colspan="5" class="hint" style="padding:24px;text-align:center;cursor:default">Asnjë thirrje këtë ditë.</td></tr>'}
+      </tbody></table></div>`;
+  }
+  $('#days').addEventListener('click', (e) => { const b = e.target.closest('[data-day]'); if (b) { histDay = b.dataset.day; renderHistory(); } });
+  $('#hday').addEventListener('click', (e) => { const tr = e.target.closest('tr[data-id]'); if (tr) { closePanels(); select(tr.dataset.id); } });
+
+  function closePanels() { $('#deals').hidden = true; $('#history').hidden = true; }
+  ['#deals', '#history'].forEach((id) => $(id).addEventListener('click', (e) => { if (e.target.id === id.slice(1) || e.target.closest('[data-close-panel]')) closePanels(); }));
+  const panelOpen = () => !$('#deals').hidden || !$('#history').hidden;
 
   function renderAlerts() {
     const el = $('#alerts');
@@ -509,7 +658,7 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
   function renderFilters() {
     const all = [...recs.values()];
     const soon = all.filter(expiringSoon).length;
-    const items = [{ id: 'all', name: 'Të gjithë', c: all.length }, ...(soon ? [{ id: 'skadon', name: 'Skadojnë së shpejti', c: soon }] : []), ...ALL_ST.map((s) => ({ ...s, c: all.filter((r) => r.status === s.id).length }))];
+    const items = [{ id: 'all', name: 'Të gjithë', c: all.length }, ...(filter === 'rithirr' ? [{ id: 'rithirr', name: 'Për t\'i rithirrur', c: all.filter((r) => r.status === 'pritje' || r.status === 'oferte').length }] : []), ...(soon ? [{ id: 'skadon', name: 'Skadojnë së shpejti', c: soon }] : []), ...ALL_ST.map((s) => ({ ...s, c: all.filter((r) => r.status === s.id).length }))];
     $('#filters').innerHTML = items.map((s) => `<button class="chip" data-f="${s.id}" aria-pressed="${filter === s.id}">${s.name}<span class="c">${s.c}</span></button>`).join('');
   }
 
@@ -693,6 +842,7 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
     e.target.value = '';
   });
   $('#btn-next').addEventListener('click', nextCall);
+  $('#btn-history').addEventListener('click', () => openHistory(dayKey(Date.now())));
 
   const detail = $('#detail');
   detail.addEventListener('click', async (e) => {
@@ -735,6 +885,7 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
   detail.addEventListener('change', (e) => { const k = e.target.dataset.k; if (k && selected && e.target.tagName === 'SELECT') saveField(selected, k, e.target.value); });
 
   document.addEventListener('keydown', (e) => {
+    if (panelOpen()) { if (e.key === 'Escape') closePanels(); return; }
     if (!$('#add').hidden || e.ctrlKey || e.metaKey || e.altKey) return;
     if (document.activeElement?.matches('input,select,textarea')) { if (e.key === 'Escape') document.activeElement.blur(); return; }
     if (/^[1-6]$/.test(e.key) && selected) { setStatus(selected, STATUSES[+e.key - 1].id); e.preventDefault(); }
