@@ -16,3 +16,10 @@ shënohet me status, dhe të dhënat e klientit e të veturës ruhen pa fletore.
 
 Kur hapet si skedar (`index.html`) në kompjuter, të dhënat ruhen në atë shfletues
 dhe leximi i fotos nuk punon.
+
+## Pakot dhe kontratat
+- Pakot: Kosovë 30 €, Kosovë + Shqipëri 35 €, Regjion 45 €, Ballkan 65 €.
+- Për çdo numër ruhen pakoja, data e bisedës dhe data kur fillon kontrata. Kontrata vlen 1 vit.
+- Kur zgjidhet "Marrëveshje e lidhur", data e bisedës dhe fillimi i kontratës plotësohen me datën e sotme.
+- Kur hapet faqja, një njoftim lart tregon kontratat që skadojnë brenda 30 ditëve ose kanë skaduar.
+  **Rinovo për 1 vit** e zgjat kontratën.

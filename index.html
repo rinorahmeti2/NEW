@@ -84,7 +84,7 @@ h1, h2, h3 { margin: 0; line-height: 1.2; text-wrap: balance; }
 .link.danger { color: var(--st-refuzoi); }
 
 /* Stats */
-.stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 16px; }
+.stats { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 16px; }
 .stat { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
 .stat b { display: block; font-size: 1.55rem; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
 .stat span { font-size: .8rem; color: var(--muted); }
@@ -127,6 +127,22 @@ h1, h2, h3 { margin: 0; line-height: 1.2; text-wrap: balance; }
 .d-num h2 { font-size: 1.7rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: .01em; }
 .d-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: .85rem; color: var(--muted); }
 .warnbox { background: var(--st-pritje-bg); color: var(--st-pritje); border-radius: 8px; padding: 7px 10px; font-size: .85rem; font-weight: 600; }
+.pako-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.pbtn { display: flex; justify-content: space-between; align-items: center; gap: 6px; border: 1px solid var(--border); background: var(--panel); border-radius: 10px; padding: 9px 10px; font-weight: 600; font-size: .9rem; text-align: left; }
+.pbtn b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pbtn.on { border: 2px solid var(--st-marreveshje); background: var(--st-marreveshje-bg); padding: 8px 9px; }
+.cinfo { margin-top: 12px; display: grid; gap: 8px; font-size: .9rem; }
+.cinfo .line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.okbox { background: var(--st-marreveshje-bg); color: var(--st-marreveshje); border-radius: 8px; padding: 7px 10px; font-size: .85rem; font-weight: 600; }
+.badbox { background: var(--st-refuzoi-bg); color: var(--st-refuzoi); border-radius: 8px; padding: 7px 10px; font-size: .85rem; font-weight: 600; }
+.alerts { background: var(--panel); border: 1px solid var(--st-pritje); border-left-width: 4px; border-radius: var(--radius); padding: 12px 14px; margin-bottom: 14px; display: grid; gap: 8px; }
+.alerts h2 { font-size: 1rem; display: flex; align-items: center; gap: 8px; }
+.alerts h2 svg { width: 18px; height: 18px; color: var(--st-pritje); flex: none; }
+.alerts p { margin: 0; color: var(--muted); font-size: .86rem; }
+.alist { display: grid; gap: 4px; }
+.aitem { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; align-items: center; border: 0; background: var(--bg); border-radius: 8px; padding: 8px 10px; text-align: left; font-size: .9rem; }
+.aitem:hover { background: var(--panel-2); }
+.aitem .ph { font-weight: 700; font-variant-numeric: tabular-nums; }
 .d-sec { padding: 14px 18px; border-bottom: 1px solid var(--border); }
 .d-sec:last-child { border-bottom: 0; }
 .d-sec h3 { font-size: .74rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 700; margin-bottom: 10px; display: flex; justify-content: space-between; }
@@ -213,6 +229,7 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
     </div>
   </header>
 
+  <section class="alerts" id="alerts" hidden></section>
   <section class="stats" id="stats"></section>
 
   <div class="main">
@@ -295,6 +312,31 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
   const ALL_ST = [{ id: 'pa', name: 'Pa thirrur' }, ...STATUSES];
   const stName = (id) => (ALL_ST.find((s) => s.id === id) || ALL_ST[0]).name;
   const pill = (id) => `<span class="pill" style="color:var(--st-${id});background:var(--st-${id}-bg)">${stName(id)}</span>`;
+
+  const PAKOT = [
+    { id: 'kosove', name: 'Kosovë', price: 30 },
+    { id: 'kosove-shqiperi', name: 'Kosovë + Shqipëri', price: 35 },
+    { id: 'regjion', name: 'Regjion', price: 45 },
+    { id: 'ballkan', name: 'Ballkan', price: 65 },
+  ];
+  const pakoOf = (id) => PAKOT.find((p) => p.id === id);
+  const todayStr = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+  const fmtD = (iso) => { if (!iso) return ''; const [y, m, d] = iso.split('-'); return `${d}.${m}.${y}`; };
+  // Kontrata vlen 1 vit nga dita kur fillon.
+  function expiryOf(r) {
+    if (!r.kontrataFillon) return null;
+    const [y, m, d] = r.kontrataFillon.split('-').map(Number);
+    if (!y || !m || !d) return null;
+    const e = new Date(y + 1, m - 1, d);
+    return e.getFullYear() + '-' + String(e.getMonth() + 1).padStart(2, '0') + '-' + String(e.getDate()).padStart(2, '0');
+  }
+  function daysLeft(r) {
+    const e = expiryOf(r); if (!e) return null;
+    const [y, m, d] = e.split('-').map(Number), t = new Date(); t.setHours(0, 0, 0, 0);
+    return Math.round((new Date(y, m - 1, d) - t) / 864e5);
+  }
+  const expiringSoon = (r) => { const n = daysLeft(r); return n !== null && n <= 30 && n >= -60; };
+  const leftText = (n) => n > 1 ? `skadon për ${n} ditë` : n === 1 ? 'skadon nesër' : n === 0 ? 'skadon sot' : `ka skaduar para ${-n} ${-n === 1 ? 'dite' : 'ditësh'}`;
 
   const KOMUNAT = ['Prishtinë', 'Prizren', 'Ferizaj', 'Pejë', 'Gjakovë', 'Gjilan', 'Mitrovicë', 'Podujevë', 'Vushtrri', 'Suharekë', 'Rahovec', 'Drenas', 'Lipjan', 'Malishevë', 'Kamenicë', 'Viti', 'Deçan', 'Istog', 'Klinë', 'Skenderaj', 'Dragash', 'Fushë Kosovë', 'Kaçanik', 'Shtime', 'Obiliq', 'Junik', 'Hani i Elezit', 'Mamushë', 'Novobërdë', 'Graçanicë', 'Ranillug', 'Kllokot', 'Partesh', 'Shtërpcë', 'Mitrovicë e Veriut', 'Zveçan', 'Zubin Potok', 'Leposaviq'];
   const MARKAT = ['Volkswagen', 'Mercedes-Benz', 'BMW', 'Audi', 'Opel', 'Ford', 'Renault', 'Peugeot', 'Škoda', 'Toyota', 'Fiat', 'Seat', 'Citroën', 'Hyundai', 'Kia', 'Dacia', 'Nissan', 'Volvo', 'Mazda', 'Honda', 'Land Rover', 'Porsche', 'Tjetër'];
@@ -409,9 +451,10 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
   function upgraded(r) { return r.v === 2 ? r : { ...r, v: 2, calls: callLog(r), hist: histOf(r) }; }
   function callsOf(r) { return callLog(r).length; }
   function matches(r) {
-    if (filter !== 'all' && r.status !== filter) return false;
+    if (filter === 'skadon') { if (!expiringSoon(r)) return false; }
+    else if (filter !== 'all' && r.status !== filter) return false;
     if (!query) return true;
-    const hay = [pretty(r.phone), r.phone, r.emri, r.mbiemri, r.vendi, r.komuna, r.marka, r.modeli, r.ngjyra, r.shenime].join(' ').toLowerCase();
+    const hay = [pretty(r.phone), r.phone, r.emri, r.mbiemri, r.vendi, r.komuna, r.marka, r.modeli, r.ngjyra, r.shenime, pakoOf(r.pako)?.name].join(' ').toLowerCase();
     const qd = query.replace(/\D/g, '');
     return hay.includes(query) || (qd.length >= 3 && r.phone.includes(qd.replace(/^0/, '')));
   }
@@ -424,7 +467,7 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
     $('#mode').textContent = Store.mode === 'db'
       ? 'Ruhet automatikisht në llogarinë tënde · ' + recs.size + ' numra'
       : Store.mode === 'local' ? 'Ruhet në këtë kompjuter · ' + recs.size + ' numra' : 'Duke u ngarkuar…';
-    renderStats(); renderFilters(); renderRows(); renderDetail();
+    renderAlerts(); renderStats(); renderFilters(); renderRows(); renderDetail();
   }
 
   function renderStats() {
@@ -442,12 +485,31 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
       [cnt('pa'), 'Pa thirrur ende'],
       [cnt('pritje') + cnt('oferte'), 'Për t\'i rithirrur'],
       [cnt('marreveshje'), 'Marrëveshje gjithsej', 'hl'],
+      [all.filter(expiringSoon).length, 'Skadojnë ≤ 30 ditë'],
     ].map(([v, l, c]) => `<div class="stat ${c || ''}"><b>${v}</b><span>${l}</span></div>`).join('');
   }
 
+  function renderAlerts() {
+    const el = $('#alerts');
+    const list = [...recs.values()].filter(expiringSoon).sort((a, b) => daysLeft(a) - daysLeft(b));
+    el.hidden = !list.length;
+    if (!list.length) { el.innerHTML = ''; return; }
+    const soon = list.filter((r) => daysLeft(r) >= 0).length, gone = list.length - soon;
+    el.innerHTML = `<h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg>${soon ? `${soon} ${soon === 1 ? 'kontratë skadon' : 'kontrata skadojnë'} brenda 30 ditëve` : ''}${soon && gone ? ' · ' : ''}${gone ? `${gone} ${gone === 1 ? 'ka skaduar' : 'kanë skaduar'}` : ''}</h2>
+      <p>Thirri klientët për rinovim. Pasi ta rinovojnë, hape numrin dhe kliko <b>Rinovo për 1 vit</b>.</p>
+      <div class="alist">${list.slice(0, 5).map((r) => { const n = daysLeft(r), who = [r.emri, r.mbiemri].filter(Boolean).join(' ');
+        return `<button class="aitem" data-id="${r.id}"><span><span class="ph">${pretty(r.phone)}</span>${who ? ' · ' + esc(who) : ''}${r.pako ? ' · ' + esc(pakoOf(r.pako)?.name || '') : ''}</span><span class="pill" style="color:var(--st-${n < 0 ? 'refuzoi' : 'pritje'});background:var(--st-${n < 0 ? 'refuzoi' : 'pritje'}-bg)">${leftText(n)} · ${fmtD(expiryOf(r))}</span></button>`; }).join('')}
+      ${list.length > 5 ? `<button class="link" data-show-soon style="justify-self:start">Shfaq të gjitha (${list.length})</button>` : ''}</div>`;
+  }
+  $('#alerts').addEventListener('click', (e) => {
+    if (e.target.closest('[data-show-soon]')) { filter = 'skadon'; render(); return; }
+    const it = e.target.closest('.aitem'); if (it) select(it.dataset.id);
+  });
+
   function renderFilters() {
     const all = [...recs.values()];
-    const items = [{ id: 'all', name: 'Të gjithë', c: all.length }, ...ALL_ST.map((s) => ({ ...s, c: all.filter((r) => r.status === s.id).length }))];
+    const soon = all.filter(expiringSoon).length;
+    const items = [{ id: 'all', name: 'Të gjithë', c: all.length }, ...(soon ? [{ id: 'skadon', name: 'Skadojnë së shpejti', c: soon }] : []), ...ALL_ST.map((s) => ({ ...s, c: all.filter((r) => r.status === s.id).length }))];
     $('#filters').innerHTML = items.map((s) => `<button class="chip" data-f="${s.id}" aria-pressed="${filter === s.id}">${s.name}<span class="c">${s.c}</span></button>`).join('');
   }
 
@@ -470,7 +532,7 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
       return `<button class="row ${selected === r.id ? 'sel' : ''}" data-id="${r.id}">
         <span class="ph">${pretty(r.phone)}</span>
         <span class="who">${who.length ? `<b>${esc(who[0])}</b>${who.slice(1).map((w) => ' · ' + esc(w)).join('')}` : '—'}</span>
-        <span class="right">${n ? `<span class="calls ${n >= 2 ? 'warn' : ''}">${n}× thirrur</span>` : ''}${pill(r.status)}</span>
+        <span class="right">${r.pako ? `<span class="calls" style="color:var(--st-marreveshje);font-weight:700">${esc(pakoOf(r.pako)?.name || '')}</span>` : ''}${expiringSoon(r) ? `<span class="calls" style="color:var(--st-${daysLeft(r) < 0 ? 'refuzoi' : 'pritje'});font-weight:700">${leftText(daysLeft(r))}</span>` : ''}${n ? `<span class="calls ${n >= 2 ? 'warn' : ''}">${n}× thirrur</span>` : ''}${pill(r.status)}</span>
       </button>`;
     }).join('') + (list.length > limit ? `<div class="more"><button class="btn small" id="more">Shfaq edhe ${Math.min(200, list.length - limit)} (gjithsej ${list.length})</button></div>` : '');
   }
@@ -488,7 +550,7 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
     }
     // Mos e rivizato formularin ndërsa ajo shkruan; rifresko vetëm pjesët e tjera.
     if (detailFor === r.id && el.contains(document.activeElement) && document.activeElement.matches('input,select,textarea')) {
-      $('#d-status', el).innerHTML = statusButtons(r); $('#d-hist', el).innerHTML = histHtml(r); $('#d-meta', el).innerHTML = metaHtml(r); $('#d-counter', el).innerHTML = counterHtml(r);
+      $('#d-status', el).innerHTML = statusButtons(r); $('#d-hist', el).innerHTML = histHtml(r); $('#d-meta', el).innerHTML = metaHtml(r); $('#d-counter', el).innerHTML = counterHtml(r); $('#d-pako', el).innerHTML = pakoButtons(r); $('#d-contract', el).innerHTML = contractInfo(r);
       return;
     }
     detailFor = r.id;
@@ -500,6 +562,14 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
       </div>
       <div class="d-sec"><h3>Sa herë e ke thirrur</h3><div id="d-counter">${counterHtml(r)}</div></div>
       <div class="d-sec"><h3>Statusi</h3><div class="status-grid" id="d-status">${statusButtons(r)}</div></div>
+      <div class="d-sec" id="d-offer"><h3>Oferta dhe kontrata</h3>
+        <div class="pako-grid" id="d-pako">${pakoButtons(r)}</div>
+        <div class="form" style="margin-top:12px">
+          <div class="f"><label for="f-bisedes">Data e bisedës</label><input id="f-bisedes" type="date" data-k="dataBisedes" value="${esc(r.dataBisedes)}"></div>
+          <div class="f"><label for="f-fillon">Kontrata fillon</label><input id="f-fillon" type="date" data-k="kontrataFillon" value="${esc(r.kontrataFillon)}"></div>
+        </div>
+        <div class="cinfo" id="d-contract">${contractInfo(r)}</div>
+      </div>
       <div class="d-sec"><h3>Klienti <span class="saved" id="d-saved"></span></h3>
         <div class="form" id="d-form">
           <div class="f"><label for="f-emri">Emri</label><input id="f-emri" data-k="emri" value="${esc(r.emri)}" autocomplete="off"></div>
@@ -534,6 +604,22 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
     const n = callsOf(r);
     return `<div class="counter"><button class="minus" id="d-minus" ${n ? '' : 'disabled'} aria-label="Hiq një thirrje">−</button><span class="big">${n}</span><button class="btn primary" id="d-plus">+ E thirra tani <span class="k" style="border-color:currentColor;opacity:.8;border:1px solid;border-radius:4px;padding:0 5px;font-size:.7rem">T</span></button></div>`;
   }
+  function pakoButtons(r) {
+    return PAKOT.map((p) => `<button class="pbtn ${r.pako === p.id ? 'on' : ''}" data-pako="${p.id}" aria-pressed="${r.pako === p.id}"><span>${p.name}</span><b>${p.price} €</b></button>`).join('');
+  }
+  function contractInfo(r) {
+    const out = [];
+    if (r.status === 'marreveshje' && !r.pako) out.push('<div class="warnbox">Zgjidh pakon që e ka marrë klienti.</div>');
+    const e = expiryOf(r), n = daysLeft(r);
+    if (e) {
+      const box = n < 0 ? 'badbox' : n <= 30 ? 'warnbox' : 'okbox';
+      out.push(`<div class="${box}">Vlen ${fmtD(r.kontrataFillon)} – ${fmtD(e)} · ${n > 30 ? `aktive, edhe ${n} ditë` : leftText(n)}</div>`);
+      if (n <= 30) out.push(`<div class="line"><button class="btn small primary" id="d-renew">Rinovo për 1 vit (deri ${fmtD(expiryOf({ kontrataFillon: e }))})</button></div>`);
+    } else if (r.pako) {
+      out.push('<span class="hint">Shëno datën kur fillon kontrata. Faqja të lajmëron 1 muaj para se të skadojë.</span>');
+    }
+    return out.join('');
+  }
   function statusButtons(r) {
     return STATUSES.map((s, i) => `<button class="sbtn ${r.status === s.id ? 'on' : ''}" data-st="${s.id}" style="${r.status === s.id ? `border-color:var(--st-${s.id});background:var(--st-${s.id}-bg)` : ''}"><span class="sw" style="background:var(--st-${s.id})"></span>${s.name}<span class="k">${i + 1}</span></button>`).join('');
   }
@@ -547,8 +633,13 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
     const now = Date.now();
     if (r.status === st) return;
     const u = upgraded(r);
-    Store.save({ ...u, status: st, hist: [...u.hist, { s: st, t: now }], updated: now });
-    render(); toast(pretty(r.phone) + ': ' + stName(st));
+    const extra = {};
+    if (!['pa', 'nukhapi'].includes(st) && !r.dataBisedes) extra.dataBisedes = todayStr();
+    if (st === 'marreveshje' && !r.kontrataFillon) extra.kontrataFillon = todayStr();
+    Store.save({ ...u, ...extra, status: st, hist: [...u.hist, { s: st, t: now }], updated: now });
+    detailFor = null; render();
+    toast(pretty(r.phone) + ': ' + stName(st) + (st === 'marreveshje' && !r.pako ? ' · zgjidh pakon' : ''));
+    if (st === 'marreveshje') $('#d-offer')?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   }
   function addCall(id, delta) {
     const r = recs.get(id); if (!r) return;
@@ -567,6 +658,7 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
     timers.set(id, setTimeout(async () => {
       await Store.save(recs.get(id));
       if ($('#d-saved') && detailFor === id) $('#d-saved').textContent = '✓ U ruajt';
+      if ((k === 'kontrataFillon' || k === 'dataBisedes') && detailFor === id) { $('#d-contract').innerHTML = contractInfo(recs.get(id)); renderAlerts(); renderStats(); renderFilters(); }
       renderRows();
     }, 600));
   }
@@ -608,6 +700,19 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
     const st = e.target.closest('[data-st]'); if (st) return setStatus(r.id, st.dataset.st);
     if (e.target.id === 'd-close') { selected = null; render(); return; }
     if (e.target.closest('#d-plus')) return addCall(r.id, 1);
+    const pk = e.target.closest('[data-pako]');
+    if (pk) {
+      const pako = r.pako === pk.dataset.pako ? '' : pk.dataset.pako;
+      Store.save({ ...r, pako, updated: Date.now() }); detailFor = null; render();
+      toast(pako ? `Pako: ${pakoOf(pako).name} (${pakoOf(pako).price} €)` : 'Pakoja u hoq');
+      return;
+    }
+    if (e.target.id === 'd-renew') {
+      const from = expiryOf(r);
+      Store.save({ ...r, kontrataFillon: from, status: 'marreveshje', updated: Date.now() }); detailFor = null; render();
+      toast(`Kontrata u rinovua deri më ${fmtD(expiryOf({ kontrataFillon: from }))}`);
+      return;
+    }
     if (e.target.id === 'd-minus') return addCall(r.id, -1);
     if (e.target.id === 'd-copy') {
       try { await navigator.clipboard.writeText(pretty(r.phone).replace(/\s/g, '')); toast('Numri u kopjua'); }
@@ -742,9 +847,9 @@ textarea.paste { width: 100%; min-height: 150px; border: 1px solid var(--border)
   let downloads = null;
   $('#btn-export').addEventListener('click', async () => {
     if (!recs.size) { toast('Lista është bosh.'); return; }
-    const head = ['Numri', 'Statusi', 'Herë thirrur', 'Thirrja e fundit', 'Emri', 'Mbiemri', 'Komuna', 'Vendi', 'Marka', 'Modeli', 'Viti', 'Ngjyra', 'Data e veturës', 'Shënime'];
+    const head = ['Numri', 'Statusi', 'Herë thirrur', 'Thirrja e fundit', 'Emri', 'Mbiemri', 'Komuna', 'Vendi', 'Marka', 'Modeli', 'Viti', 'Ngjyra', 'Data e veturës', 'Shënime', 'Pako', 'Çmimi (€)', 'Data e bisedës', 'Kontrata fillon', 'Kontrata skadon'];
     const cell = (v) => '"' + String(v ?? '').replace(/"/g, '""') + '"';
-    const lines = sorted().map((r) => { const log = callLog(r), n = log.length; return [pretty(r.phone), stName(r.status), n, n ? when(log[n - 1].t) : '', r.emri, r.mbiemri, r.komuna, r.vendi, r.marka, r.modeli, r.viti, r.ngjyra, r.data, r.shenime].map(cell).join(';'); });
+    const lines = sorted().map((r) => { const log = callLog(r), n = log.length; return [pretty(r.phone), stName(r.status), n, n ? when(log[n - 1].t) : '', r.emri, r.mbiemri, r.komuna, r.vendi, r.marka, r.modeli, r.viti, r.ngjyra, r.data, r.shenime, pakoOf(r.pako)?.name || '', pakoOf(r.pako)?.price ?? '', fmtD(r.dataBisedes), fmtD(r.kontrataFillon), fmtD(expiryOf(r))].map(cell).join(';'); });
     const csv = '﻿' + head.map(cell).join(';') + '\r\n' + lines.join('\r\n');
     const d = new Date(), filename = `thirrjet-${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}.csv`;
     if (downloads) {
